@@ -1,0 +1,4 @@
+/* Persian font stack. No font files: load Vazirmatn yourself or fall through to system fonts. */
+@theme {
+  --font-sans: Vazirmatn, Shabnam, Samim, "Noto Sans Arabic", Tahoma, ui-sans-serif, system-ui, sans-serif;
+}

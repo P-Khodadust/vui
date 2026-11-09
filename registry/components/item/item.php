@@ -1,0 +1,7 @@
+<?php
+function item($c='',$variant='default',$size='default',$class='',$attrs=[]){return el(isset($attrs['href'])?'a':'div','item',cn("group/item flex flex-wrap items-center rounded-md border border-transparent text-sm transition-colors outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [a]:hover:bg-accent",['outline'=>"border-border",'muted'=>"bg-muted/50"][(string)$variant]??'',$size=='sm'?"gap-2.5 px-4 py-3":"gap-4 p-4"),$c,$class,$attrs);}
+function item_media($c='',$variant='default',$class='',$attrs=[]){return el('div','item-media',cn("flex shrink-0 items-center justify-center gap-2 group-has-[[data-slot=item-description]]/item:translate-y-0.5 group-has-[[data-slot=item-description]]/item:self-start",$variant=='icon'?"size-8 rounded-sm border bg-muted [&_svg:not([class*='size-'])]:size-4":''),$c,$class,$attrs);}
+function item_content($c='',$class='',$attrs=[]){return el('div','item-content',"flex flex-1 flex-col gap-1",$c,$class,$attrs);}
+function item_title($c='',$class='',$attrs=[]){return el('div','item-title',"flex w-fit items-center gap-2 text-sm leading-snug font-medium",$c,$class,$attrs);}
+function item_description($c='',$class='',$attrs=[]){return el('p','item-description',"line-clamp-2 text-sm leading-normal font-normal text-balance text-muted-foreground",$c,$class,$attrs);}
+function item_actions($c='',$class='',$attrs=[]){return el('div','item-actions',"flex items-center gap-2",$c,$class,$attrs);}

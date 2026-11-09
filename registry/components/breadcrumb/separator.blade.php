@@ -1,0 +1,1 @@
+{!! breadcrumb_separator("$slot" ? raw($slot) : null, attrs: $attributes->getAttributes()) !!}

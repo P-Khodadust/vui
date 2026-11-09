@@ -1,0 +1,2 @@
+@props(['pressed' => false, 'variant' => 'default', 'size' => 'default'])
+{!! toggle(raw($slot), $pressed, $variant, $size, $attributes->get('class', ''), $attributes->except('class')->getAttributes()) !!}

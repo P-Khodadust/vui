@@ -1,0 +1,1 @@
+{!! field_group(raw($slot), attrs: $attributes->getAttributes()) !!}

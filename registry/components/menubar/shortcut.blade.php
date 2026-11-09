@@ -1,0 +1,1 @@
+{!! menubar_shortcut(raw($slot), attrs: $attributes->getAttributes()) !!}

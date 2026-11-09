@@ -1,0 +1,1 @@
+{!! navigation_menu_item(raw($slot), attrs: $attributes->getAttributes()) !!}

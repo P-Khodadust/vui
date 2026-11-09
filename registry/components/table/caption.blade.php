@@ -1,0 +1,1 @@
+{!! table_caption(raw($slot), attrs: $attributes->getAttributes()) !!}

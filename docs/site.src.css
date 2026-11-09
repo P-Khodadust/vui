@@ -1,0 +1,8 @@
+@import "tailwindcss" source(none);
+@import "../registry/css/theme.css";
+@import "../registry/css/font-fa.css";
+@import "../registry/css/sidebar-theme.css";
+@import "../registry/css/motion.css";
+@source "../registry/components";
+@source "./build.php";
+@source "./examples.php";

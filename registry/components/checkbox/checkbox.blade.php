@@ -1,0 +1,1 @@
+{!! checkbox(attrs: $attributes->getAttributes()) !!}

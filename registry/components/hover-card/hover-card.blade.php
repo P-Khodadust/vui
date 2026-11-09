@@ -1,0 +1,1 @@
+{!! hover_card(raw($slot), attrs: $attributes->getAttributes()) !!}

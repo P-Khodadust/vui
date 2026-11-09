@@ -1,0 +1,1 @@
+{!! breadcrumb_page(raw($slot), attrs: $attributes->getAttributes()) !!}

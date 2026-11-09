@@ -1,0 +1,1 @@
+{!! kbd(raw($slot), attrs: $attributes->getAttributes()) !!}

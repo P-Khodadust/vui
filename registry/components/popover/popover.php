@@ -1,0 +1,3 @@
+<?php
+function popover_trigger($c,$for,$class='',$attrs=[]){return el('button','popover-trigger','',$c,$class,['type'=>'button','popovertarget'=>$for,'style'=>"anchor-name:--$for"]+$attrs);}
+function popover_content($c,$id,$class='',$attrs=[]){return el('div','popover-content',"m-auto w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden [position-area:block-end_span-inline-end] [position-try-fallbacks:flip-block,flip-inline] supports-[anchor-name:--a]:m-0 supports-[anchor-name:--a]:mt-1",$c,$class,['id'=>$id,'popover'=>true,'style'=>"position-anchor:--$id"]+$attrs);}

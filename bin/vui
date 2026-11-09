@@ -1,0 +1,152 @@
+#!/usr/bin/env php
+<?php
+// vui CLI: copies registry source files into your project. No dependencies.
+const USAGE = <<<TXT
+Usage: php vui <command> [--registry=PATH|HTTPS_URL] [--force]
+  init            Copy core + theme, print the lines to add
+  add <name...>   Copy components and their dependencies (never overwrites without --force)
+  list            Show components and byte sizes
+  diff <name...>  Compare local files against the registry (exit 1 if they differ)
+The registry defaults to this repo's registry/ folder, or \$VUI_REGISTRY if set.
+
+TXT;
+
+function fail(string $m): never { fwrite(STDERR, "vui: $m\n"); exit(1); }
+
+$force = false;
+$src = getenv('VUI_REGISTRY') ?: dirname(__DIR__) . '/registry';
+$names = [];
+foreach (array_slice($argv, 1) as $a) {
+    if ($a === '--force') $force = true;
+    elseif (str_starts_with($a, '--registry=')) $src = substr($a, 11);
+    elseif ($a[0] === '-') fail("unknown option $a");
+    else $names[] = $a;
+}
+$cmd = array_shift($names);
+if (!in_array($cmd, ['init', 'add', 'list', 'diff'])) { echo USAGE; exit($cmd ? 1 : 0); }
+
+$src = preg_replace('~/?registry\.json$~', '', rtrim($src, '/'));
+if (preg_match('~^[a-z][a-z0-9+.-]*://~i', $src) && !str_starts_with($src, 'https://')) fail('a remote registry must use https://');
+
+$laravel = is_file('artisan');
+
+function fetch(string $rel): string {
+    global $src;
+    $body = @file_get_contents("$src/$rel", false, stream_context_create(['http' => ['timeout' => 20, 'user_agent' => 'vui-cli']]));
+    if ($body === false) fail("cannot read $src/$rel");
+    return $body;
+}
+
+// Maps a registry file to its project path, null when this environment doesn't use it.
+function target(string $f): ?string {
+    global $laravel;
+    // trust boundary: a remote registry must not write outside the project
+    if (!preg_match('~^(core|css|js|components/[a-z0-9-]+)/[a-z0-9-]+(\.blade)?\.(php|css|js)$~', $f)) fail("refusing unsafe registry path: $f");
+    $parts = explode('/', $f);
+    $file = end($parts);
+    return match ($parts[0]) {
+        'core' => ($laravel ? 'resources/ui/' : 'ui/') . $file,
+        'css' => ($laravel ? 'resources/css/' : 'ui/') . $file,
+        'js' => ($laravel ? 'public/js/ui/' : 'ui/js/') . $file,
+        default => !str_ends_with($file, '.blade.php')
+            ? ($laravel ? 'resources/ui/components/' : 'ui/components/') . $file
+            : ($laravel ? 'resources/views/components/ui/' . ($file == "$parts[1].blade.php" ? $file : "$parts[1]/$file") : null),
+    };
+}
+
+// shortcut: one hunk (common prefix/suffix stripped), upgrade to LCS if multi-hunk diffs ever matter.
+function hunk(string $registry, string $local): string {
+    $a = explode("\n", $registry);
+    $b = explode("\n", $local);
+    while ($a && $b && $a[0] === $b[0]) { array_shift($a); array_shift($b); }
+    while ($a && $b && end($a) === end($b)) { array_pop($a); array_pop($b); }
+    return implode("\n", [...array_map(fn($l) => "  - $l", $a), ...array_map(fn($l) => "  + $l", $b)]);
+}
+
+function install(array $item): array {
+    global $force;
+    $js = [];
+    foreach ($item['files'] as $f) {
+        if (!$t = target($f)) continue;
+        $new = fetch($f);
+        if (str_ends_with($f, '.js')) $js[] = $t;
+        if (is_file($t)) {
+            $old = file_get_contents($t);
+            if ($old === $new) { echo "  same  $t\n"; continue; }
+            if (!$force) { echo "  skip  $t (differs from registry, --force overwrites)\n  - registry\n  + local\n" . hunk($new, $old) . "\n"; continue; }
+        }
+        if (!is_dir(dirname($t)) && !mkdir(dirname($t), 0777, true)) fail("cannot create " . dirname($t));
+        if (file_put_contents($t, $new) === false) fail("cannot write $t");
+        echo "  wrote $t\n";
+    }
+    return $js;
+}
+
+$reg = json_decode(fetch('registry.json'), true);
+if (!isset($reg['items'])) fail('registry.json is not valid');
+$items = array_column($reg['items'], null, 'name');
+
+function resolve(string $name, array &$seen): void {
+    global $items;
+    if (isset($seen[$name])) return;
+    if (!isset($items[$name])) fail("unknown component: $name (try: php vui list)");
+    $seen[$name] = true;
+    foreach ($items[$name]['dependsOn'] ?? [] as $d) resolve($d, $seen);
+}
+
+switch ($cmd) {
+    case 'init':
+        install($items['core']);
+        install($items['theme']);
+        echo "\nDetected: " . ($laravel ? 'Laravel' : 'pure PHP') . "\nAdd these lines:\n\n";
+        echo $laravel
+            ? <<<TXT
+              composer.json, under "autoload" (then run: composer dump-autoload):
+                "files": ["resources/ui/ui.php"]
+
+              resources/css/app.css, right after the tailwindcss import:
+                @import "./theme.css";
+                @source "../ui";
+
+              TXT
+            : <<<TXT
+              Your PHP entry file:
+                require __DIR__ . '/ui/ui.php';
+
+              Your Tailwind entry file (e.g. app.css, in the project root):
+                @import "tailwindcss";
+                @import "./ui/theme.css";
+                @source "./ui";
+
+              TXT;
+        break;
+    case 'add':
+        if (!$names) fail('add needs at least one component name');
+        if (!is_file(target($items['core']['files'][0]))) fail('run "php vui init" first');
+        $seen = [];
+        foreach ($names as $n) resolve($n, $seen);
+        $js = [];
+        foreach (array_keys($seen) as $n) { echo "$n\n"; array_push($js, ...install($items[$n])); }
+        foreach ($seen as $n => $_) foreach ($items[$n]['files'] as $f) if (str_starts_with($f, 'css/')) echo "\nAdd to your Tailwind entry file:\n  @import \"./" . ($laravel ? '' : 'ui/') . basename($f) . "\";\n";
+        foreach ($js as $t) echo "\nFor the JS behavior, add to your page:\n  <script src=\"/" . preg_replace('~^public/~', '', $t) . "\" defer></script>\n";
+        break;
+    case 'list':
+        foreach ($items as $n => $i) printf("%-16s %6d B  %s\n", $n, $i['size'] ?? 0, $i['description'] ?? '');
+        break;
+    case 'diff':
+        if (!$names) fail('diff needs a component name');
+        $differs = false;
+        foreach ($names as $n) {
+            if (!isset($items[$n])) fail("unknown component: $n");
+            foreach ($items[$n]['files'] as $f) {
+                if (!$t = target($f)) continue;
+                if (!is_file($t)) { echo "missing $t\n"; $differs = true; continue; }
+                $new = fetch($f);
+                $old = file_get_contents($t);
+                if ($new === $old) { echo "same    $t\n"; continue; }
+                $differs = true;
+                echo "differs $t\n  - registry\n  + local\n" . hunk($new, $old) . "\n";
+            }
+        }
+        exit($differs ? 1 : 0);
+}

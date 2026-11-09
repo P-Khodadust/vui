@@ -1,0 +1,1 @@
+{!! label(raw($slot), attrs: $attributes->getAttributes()) !!}

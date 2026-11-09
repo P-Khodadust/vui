@@ -1,0 +1,1 @@
+{!! avatar_fallback(raw($slot), attrs: $attributes->getAttributes()) !!}

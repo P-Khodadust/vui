@@ -1,0 +1,1 @@
+{!! sheet_footer(raw($slot), attrs: $attributes->getAttributes()) !!}

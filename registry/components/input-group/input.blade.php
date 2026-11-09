@@ -1,0 +1,1 @@
+{!! input_group_input(attrs: $attributes->getAttributes()) !!}

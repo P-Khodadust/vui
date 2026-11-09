@@ -1,0 +1,2 @@
+@props(['month', 'selected' => '', 'href' => '', 'nav' => '', 'weekStart' => 0, 'labels' => []])
+{!! calendar($month, $selected, $href, $nav, $weekStart, $labels, attrs: $attributes->getAttributes()) !!}

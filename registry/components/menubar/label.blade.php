@@ -1,0 +1,1 @@
+{!! menubar_label(raw($slot), attrs: $attributes->getAttributes()) !!}

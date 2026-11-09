@@ -1,0 +1,27 @@
+/* vui motion. Browsers without allow-discrete skip it. */
+@supports (transition-behavior:allow-discrete){@layer base{
+:is(dialog,[popover])[data-slot],dialog[data-slot]::backdrop{opacity:var(--o,0);scale:var(--s,.95);translate:var(--x,0) var(--y,0);transition:opacity var(--d,.15s),scale var(--d,.15s),translate var(--d,.15s),overlay var(--d,.15s) allow-discrete,display var(--d,.15s) allow-discrete}
+dialog[data-slot]{position:fixed;inset:0}
+dialog[data-slot]::backdrop{--o:0;--s:1;--x:0;--y:0}
+:is(dialog[open],:popover-open)[data-slot],dialog[open][data-slot]::backdrop{opacity:1;scale:1;translate:0}
+@starting-style{:is(dialog[open],:popover-open)[data-slot],dialog[open][data-slot]::backdrop{opacity:var(--o,0);scale:var(--s,.95);translate:var(--x,0) var(--y,0)}}
+[data-slot=sheet-content],[data-slot=drawer-content],[data-slot=sidebar]{--o:1;--s:1;--d:.3s}
+[data-slot=drawer-content]{--y:100%}
+@media (width<48rem){[data-slot=sidebar]{--x:-100%}[data-slot=sidebar]:dir(rtl){--x:100%}}
+details[data-slot]{interpolate-size:allow-keywords}
+details[data-slot]::details-content{block-size:0;opacity:0;overflow:clip}
+details[open][data-slot]::details-content{block-size:auto;opacity:1}
+@media (prefers-reduced-motion:no-preference){details[data-slot]::details-content{transition:block-size .2s,opacity .2s,content-visibility .2s allow-discrete}}
+[data-slot=toast]{transition:opacity .2s,translate .2s}
+[data-slot=toast][data-out]{opacity:0;translate:0 .5rem}
+@starting-style{[data-slot=toast]{opacity:0;translate:0 .5rem}}
+[data-slot=tabs-content][data-on]{transition:opacity .15s}
+@starting-style{[data-slot=tabs-content][data-on]{opacity:0}}
+}}
+/* Unlayered: must beat the fallback utilities. */
+@supports (anchor-scope:--a){
+:is([data-slot=tooltip],[data-slot=hover-card]){anchor-scope:--v}
+:is([data-slot=tooltip-trigger],[data-slot=hover-card-trigger]){anchor-name:--v}
+[data-slot=tooltip-content]{position:fixed;inset:auto;translate:none;position-anchor:--v;position-area:block-start;position-try-fallbacks:block-start span-inline-end,block-start span-inline-start}
+[data-slot=hover-card-content]{position:fixed;inset:auto;position-anchor:--v;position-area:block-end span-inline-end;position-try-fallbacks:flip-inline,flip-block,flip-block flip-inline}
+}

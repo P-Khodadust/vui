@@ -1,0 +1,1 @@
+{!! dialog_close(raw($slot), attrs: $attributes->getAttributes()) !!}

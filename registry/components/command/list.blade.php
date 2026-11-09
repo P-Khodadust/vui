@@ -1,0 +1,1 @@
+{!! command_list(raw($slot), attrs: $attributes->getAttributes()) !!}

@@ -1,0 +1,1 @@
+{!! alert_dialog_action(raw($slot), attrs: $attributes->getAttributes()) !!}

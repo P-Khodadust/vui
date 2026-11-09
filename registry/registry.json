@@ -1,0 +1,878 @@
+{
+    "items": [
+        {
+            "name": "core",
+            "type": "core",
+            "files": [
+                "core/ui.php"
+            ],
+            "dependsOn": [],
+            "description": "cn(), attrs(), e(), raw(), el()",
+            "size": 1216
+        },
+        {
+            "name": "theme",
+            "type": "style",
+            "files": [
+                "css/theme.css"
+            ],
+            "dependsOn": [],
+            "description": "Tailwind v4 tokens, shadcn variable names",
+            "size": 2706
+        },
+        {
+            "name": "font-fa",
+            "type": "style",
+            "files": [
+                "css/font-fa.css"
+            ],
+            "dependsOn": [],
+            "description": "Persian font stack for --font-sans, no font files",
+            "size": 217
+        },
+        {
+            "name": "motion",
+            "type": "style",
+            "files": [
+                "css/motion.css"
+            ],
+            "dependsOn": [],
+            "description": "Enter and exit animations, shared by the components that need them",
+            "size": 2262
+        },
+        {
+            "name": "button",
+            "type": "component",
+            "dependsOn": [],
+            "description": "Button with shadcn variants and sizes",
+            "files": [
+                "components/button/button.blade.php",
+                "components/button/button.php"
+            ],
+            "size": 1747
+        },
+        {
+            "name": "input",
+            "type": "component",
+            "dependsOn": [],
+            "description": "Text input",
+            "files": [
+                "components/input/input.blade.php",
+                "components/input/input.php"
+            ],
+            "size": 788
+        },
+        {
+            "name": "label",
+            "type": "component",
+            "dependsOn": [],
+            "description": "Form label",
+            "files": [
+                "components/label/label.blade.php",
+                "components/label/label.php"
+            ],
+            "size": 372
+        },
+        {
+            "name": "textarea",
+            "type": "component",
+            "dependsOn": [],
+            "description": "Multi-line text input",
+            "files": [
+                "components/textarea/textarea.blade.php",
+                "components/textarea/textarea.php"
+            ],
+            "size": 624
+        },
+        {
+            "name": "card",
+            "type": "component",
+            "dependsOn": [],
+            "description": "Card with header, title, description, action, content, footer",
+            "files": [
+                "components/card/action.blade.php",
+                "components/card/card.blade.php",
+                "components/card/card.php",
+                "components/card/content.blade.php",
+                "components/card/description.blade.php",
+                "components/card/footer.blade.php",
+                "components/card/header.blade.php",
+                "components/card/title.blade.php"
+            ],
+            "size": 1553
+        },
+        {
+            "name": "badge",
+            "type": "component",
+            "dependsOn": [],
+            "description": "Small status label",
+            "files": [
+                "components/badge/badge.blade.php",
+                "components/badge/badge.php"
+            ],
+            "size": 1334
+        },
+        {
+            "name": "separator",
+            "type": "component",
+            "dependsOn": [],
+            "description": "Horizontal or vertical divider",
+            "files": [
+                "components/separator/separator.blade.php",
+                "components/separator/separator.php"
+            ],
+            "size": 592
+        },
+        {
+            "name": "alert",
+            "type": "component",
+            "dependsOn": [],
+            "description": "Callout with title and description",
+            "files": [
+                "components/alert/alert.blade.php",
+                "components/alert/alert.php",
+                "components/alert/description.blade.php",
+                "components/alert/title.blade.php"
+            ],
+            "size": 1181
+        },
+        {
+            "name": "icon",
+            "type": "lib",
+            "files": [
+                "components/icon/icon.php"
+            ],
+            "dependsOn": [],
+            "description": "Inline SVG icon from one path, used by other components",
+            "size": 333
+        },
+        {
+            "name": "dialog",
+            "type": "component",
+            "files": [
+                "components/dialog/close.blade.php",
+                "components/dialog/content.blade.php",
+                "components/dialog/description.blade.php",
+                "components/dialog/dialog.php",
+                "components/dialog/footer.blade.php",
+                "components/dialog/header.blade.php",
+                "components/dialog/title.blade.php",
+                "components/dialog/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "icon",
+                "motion"
+            ],
+            "description": "Modal on native <dialog>",
+            "size": 2534
+        },
+        {
+            "name": "accordion",
+            "type": "component",
+            "files": [
+                "components/accordion/accordion.blade.php",
+                "components/accordion/accordion.php",
+                "components/accordion/content.blade.php",
+                "components/accordion/item.blade.php",
+                "components/accordion/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "icon",
+                "motion"
+            ],
+            "description": "Collapsible sections on native <details name>",
+            "size": 1383
+        },
+        {
+            "name": "dropdown-menu",
+            "type": "component",
+            "files": [
+                "components/dropdown-menu/content.blade.php",
+                "components/dropdown-menu/dropdown-menu.php",
+                "components/dropdown-menu/item.blade.php",
+                "components/dropdown-menu/label.blade.php",
+                "components/dropdown-menu/separator.blade.php",
+                "components/dropdown-menu/shortcut.blade.php",
+                "components/dropdown-menu/trigger.blade.php",
+                "js/dropdown-menu.js"
+            ],
+            "dependsOn": [
+                "motion"
+            ],
+            "description": "Menu on the popover attribute, optional arrow-key JS",
+            "size": 3627
+        },
+        {
+            "name": "popover",
+            "type": "component",
+            "files": [
+                "components/popover/content.blade.php",
+                "components/popover/popover.php",
+                "components/popover/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "motion"
+            ],
+            "description": "Anchored panel on the popover attribute",
+            "size": 794
+        },
+        {
+            "name": "tooltip",
+            "type": "component",
+            "files": [
+                "components/tooltip/content.blade.php",
+                "components/tooltip/tooltip.blade.php",
+                "components/tooltip/tooltip.php",
+                "components/tooltip/trigger.blade.php",
+                "js/tooltip.js"
+            ],
+            "dependsOn": [
+                "motion"
+            ],
+            "description": "CSS hover/focus tooltip, optional Esc JS",
+            "size": 1857
+        },
+        {
+            "name": "switch",
+            "type": "component",
+            "files": [
+                "components/switch/switch.blade.php",
+                "components/switch/switch.php"
+            ],
+            "dependsOn": [],
+            "description": "Toggle on a native checkbox with role=switch",
+            "size": 999
+        },
+        {
+            "name": "checkbox",
+            "type": "component",
+            "files": [
+                "components/checkbox/checkbox.blade.php",
+                "components/checkbox/checkbox.php"
+            ],
+            "dependsOn": [],
+            "description": "Styled native checkbox",
+            "size": 817
+        },
+        {
+            "name": "select",
+            "type": "component",
+            "files": [
+                "components/select/optgroup.blade.php",
+                "components/select/option.blade.php",
+                "components/select/select.blade.php",
+                "components/select/select.php"
+            ],
+            "dependsOn": [
+                "icon"
+            ],
+            "description": "Styled native select",
+            "size": 1680
+        },
+        {
+            "name": "tabs",
+            "type": "component",
+            "files": [
+                "components/tabs/content.blade.php",
+                "components/tabs/list.blade.php",
+                "components/tabs/tabs.blade.php",
+                "components/tabs/tabs.php",
+                "components/tabs/trigger.blade.php",
+                "js/tabs.js"
+            ],
+            "dependsOn": [
+                "motion"
+            ],
+            "description": "Tabs with roving focus. tabs.js handles switching and keyboard",
+            "size": 3212
+        },
+        {
+            "name": "table",
+            "type": "component",
+            "files": [
+                "components/table/body.blade.php",
+                "components/table/caption.blade.php",
+                "components/table/cell.blade.php",
+                "components/table/footer.blade.php",
+                "components/table/head.blade.php",
+                "components/table/header.blade.php",
+                "components/table/row.blade.php",
+                "components/table/table.blade.php",
+                "components/table/table.php"
+            ],
+            "dependsOn": [],
+            "description": "Table with header, body, footer, row, head, cell, caption",
+            "size": 1904
+        },
+        {
+            "name": "toast",
+            "type": "component",
+            "files": [
+                "components/toast/toast.blade.php",
+                "components/toast/toast.php",
+                "components/toast/toaster.blade.php",
+                "js/toast.js"
+            ],
+            "dependsOn": [
+                "icon",
+                "motion"
+            ],
+            "description": "Notifications. Server-rendered, toast.js adds window.toast() and auto-dismiss",
+            "size": 2040
+        },
+        {
+            "name": "pagination",
+            "type": "component",
+            "files": [
+                "components/pagination/content.blade.php",
+                "components/pagination/ellipsis.blade.php",
+                "components/pagination/item.blade.php",
+                "components/pagination/link.blade.php",
+                "components/pagination/next.blade.php",
+                "components/pagination/pagination.blade.php",
+                "components/pagination/pagination.php",
+                "components/pagination/previous.blade.php"
+            ],
+            "dependsOn": [
+                "button",
+                "icon"
+            ],
+            "description": "Page navigation links",
+            "size": 2012
+        },
+        {
+            "name": "skeleton",
+            "type": "component",
+            "files": [
+                "components/skeleton/skeleton.blade.php",
+                "components/skeleton/skeleton.php"
+            ],
+            "dependsOn": [],
+            "description": "Loading placeholder",
+            "size": 182
+        },
+        {
+            "name": "avatar",
+            "type": "component",
+            "files": [
+                "components/avatar/avatar.blade.php",
+                "components/avatar/avatar.php",
+                "components/avatar/fallback.blade.php",
+                "components/avatar/image.blade.php"
+            ],
+            "dependsOn": [],
+            "description": "User image with fallback",
+            "size": 1066
+        },
+        {
+            "name": "breadcrumb",
+            "type": "component",
+            "files": [
+                "components/breadcrumb/breadcrumb.blade.php",
+                "components/breadcrumb/breadcrumb.php",
+                "components/breadcrumb/ellipsis.blade.php",
+                "components/breadcrumb/item.blade.php",
+                "components/breadcrumb/link.blade.php",
+                "components/breadcrumb/list.blade.php",
+                "components/breadcrumb/page.blade.php",
+                "components/breadcrumb/separator.blade.php"
+            ],
+            "dependsOn": [
+                "icon"
+            ],
+            "description": "Path navigation",
+            "size": 1878
+        },
+        {
+            "name": "form",
+            "type": "component",
+            "files": [
+                "components/form/description.blade.php",
+                "components/form/field.blade.php",
+                "components/form/form.php",
+                "components/form/item.blade.php",
+                "components/form/label.blade.php",
+                "components/form/message.blade.php"
+            ],
+            "dependsOn": [
+                "label",
+                "input",
+                "textarea"
+            ],
+            "description": "Label + control + error grouping, old()-friendly",
+            "size": 1857
+        },
+        {
+            "name": "aspect-ratio",
+            "type": "component",
+            "files": [
+                "components/aspect-ratio/aspect-ratio.blade.php",
+                "components/aspect-ratio/aspect-ratio.php"
+            ],
+            "dependsOn": [],
+            "description": "Keep content at a fixed width-to-height ratio",
+            "size": 261
+        },
+        {
+            "name": "kbd",
+            "type": "component",
+            "files": [
+                "components/kbd/group.blade.php",
+                "components/kbd/kbd.blade.php",
+                "components/kbd/kbd.php"
+            ],
+            "dependsOn": [],
+            "description": "Keyboard key",
+            "size": 704
+        },
+        {
+            "name": "spinner",
+            "type": "component",
+            "files": [
+                "components/spinner/spinner.blade.php",
+                "components/spinner/spinner.php"
+            ],
+            "dependsOn": [
+                "icon"
+            ],
+            "description": "Animated loading indicator",
+            "size": 304
+        },
+        {
+            "name": "progress",
+            "type": "component",
+            "files": [
+                "components/progress/progress.blade.php",
+                "components/progress/progress.php"
+            ],
+            "dependsOn": [],
+            "description": "Styled native progress bar",
+            "size": 573
+        },
+        {
+            "name": "slider",
+            "type": "component",
+            "files": [
+                "components/slider/slider.blade.php",
+                "components/slider/slider.php"
+            ],
+            "dependsOn": [],
+            "description": "Native range input",
+            "size": 465
+        },
+        {
+            "name": "radio-group",
+            "type": "component",
+            "files": [
+                "components/radio-group/item.blade.php",
+                "components/radio-group/radio-group.blade.php",
+                "components/radio-group/radio-group.php"
+            ],
+            "dependsOn": [],
+            "description": "Styled native radio buttons",
+            "size": 1080
+        },
+        {
+            "name": "collapsible",
+            "type": "component",
+            "files": [
+                "components/collapsible/collapsible.blade.php",
+                "components/collapsible/collapsible.php",
+                "components/collapsible/content.blade.php",
+                "components/collapsible/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "motion"
+            ],
+            "description": "Show and hide content on native <details>",
+            "size": 674
+        },
+        {
+            "name": "scroll-area",
+            "type": "component",
+            "files": [
+                "components/scroll-area/scroll-area.blade.php",
+                "components/scroll-area/scroll-area.php"
+            ],
+            "dependsOn": [],
+            "description": "Scrollable box with a thin themed scrollbar",
+            "size": 378
+        },
+        {
+            "name": "toggle",
+            "type": "component",
+            "files": [
+                "components/toggle/toggle.blade.php",
+                "components/toggle/toggle.php"
+            ],
+            "dependsOn": [],
+            "description": "Two-state button on a native checkbox",
+            "size": 1302
+        },
+        {
+            "name": "toggle-group",
+            "type": "component",
+            "files": [
+                "components/toggle-group/item.blade.php",
+                "components/toggle-group/toggle-group.blade.php",
+                "components/toggle-group/toggle-group.php"
+            ],
+            "dependsOn": [
+                "toggle"
+            ],
+            "description": "Joined toggles, single or multiple choice",
+            "size": 1070
+        },
+        {
+            "name": "button-group",
+            "type": "component",
+            "files": [
+                "components/button-group/button-group.blade.php",
+                "components/button-group/button-group.php",
+                "components/button-group/separator.blade.php",
+                "components/button-group/text.blade.php"
+            ],
+            "dependsOn": [
+                "separator"
+            ],
+            "description": "Join related buttons and inputs",
+            "size": 1370
+        },
+        {
+            "name": "empty",
+            "type": "component",
+            "files": [
+                "components/empty/content.blade.php",
+                "components/empty/description.blade.php",
+                "components/empty/empty.blade.php",
+                "components/empty/empty.php",
+                "components/empty/header.blade.php",
+                "components/empty/media.blade.php",
+                "components/empty/title.blade.php"
+            ],
+            "dependsOn": [],
+            "description": "Empty state with icon, title, description, action",
+            "size": 1794
+        },
+        {
+            "name": "item",
+            "type": "component",
+            "files": [
+                "components/item/actions.blade.php",
+                "components/item/content.blade.php",
+                "components/item/description.blade.php",
+                "components/item/item.blade.php",
+                "components/item/item.php",
+                "components/item/media.blade.php",
+                "components/item/title.blade.php"
+            ],
+            "dependsOn": [],
+            "description": "Flexible row for lists and settings",
+            "size": 1996
+        },
+        {
+            "name": "typography",
+            "type": "component",
+            "files": [
+                "components/typography/typography.blade.php",
+                "components/typography/typography.php"
+            ],
+            "dependsOn": [],
+            "description": "Headings, text, quote, list and code styles",
+            "size": 1141
+        },
+        {
+            "name": "field",
+            "type": "component",
+            "files": [
+                "components/field/description.blade.php",
+                "components/field/error.blade.php",
+                "components/field/field.blade.php",
+                "components/field/field.php",
+                "components/field/group.blade.php",
+                "components/field/label.blade.php",
+                "components/field/legend.blade.php",
+                "components/field/set.blade.php"
+            ],
+            "dependsOn": [
+                "label"
+            ],
+            "description": "Accessible field layout with legend, label, description, error",
+            "size": 1978
+        },
+        {
+            "name": "input-group",
+            "type": "component",
+            "files": [
+                "components/input-group/addon.blade.php",
+                "components/input-group/button.blade.php",
+                "components/input-group/input-group.blade.php",
+                "components/input-group/input-group.php",
+                "components/input-group/input.blade.php"
+            ],
+            "dependsOn": [
+                "button",
+                "input"
+            ],
+            "description": "Input with icons, text or buttons inside",
+            "size": 1920
+        },
+        {
+            "name": "input-otp",
+            "type": "component",
+            "files": [
+                "components/input-otp/input-otp.blade.php",
+                "components/input-otp/input-otp.php"
+            ],
+            "dependsOn": [],
+            "description": "One-time code boxes on one native input",
+            "size": 1049
+        },
+        {
+            "name": "combobox",
+            "type": "component",
+            "files": [
+                "components/combobox/combobox.blade.php",
+                "components/combobox/combobox.php",
+                "components/combobox/option.blade.php"
+            ],
+            "dependsOn": [
+                "input"
+            ],
+            "description": "Searchable input on native <datalist>",
+            "size": 557
+        },
+        {
+            "name": "date-picker",
+            "type": "component",
+            "files": [
+                "components/date-picker/date-picker.blade.php",
+                "components/date-picker/date-picker.php"
+            ],
+            "dependsOn": [
+                "input"
+            ],
+            "description": "Native date input",
+            "size": 217
+        },
+        {
+            "name": "alert-dialog",
+            "type": "component",
+            "files": [
+                "components/alert-dialog/action.blade.php",
+                "components/alert-dialog/alert-dialog.php",
+                "components/alert-dialog/cancel.blade.php",
+                "components/alert-dialog/content.blade.php",
+                "components/alert-dialog/description.blade.php",
+                "components/alert-dialog/footer.blade.php",
+                "components/alert-dialog/header.blade.php",
+                "components/alert-dialog/title.blade.php",
+                "components/alert-dialog/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "dialog",
+                "button"
+            ],
+            "description": "Modal that demands a choice, on native <dialog>",
+            "size": 1709
+        },
+        {
+            "name": "sheet",
+            "type": "component",
+            "files": [
+                "components/sheet/content.blade.php",
+                "components/sheet/description.blade.php",
+                "components/sheet/footer.blade.php",
+                "components/sheet/header.blade.php",
+                "components/sheet/sheet.php",
+                "components/sheet/title.blade.php",
+                "components/sheet/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "dialog"
+            ],
+            "description": "Panel that slides in from any side, on native <dialog>",
+            "size": 1875
+        },
+        {
+            "name": "drawer",
+            "type": "component",
+            "files": [
+                "components/drawer/close.blade.php",
+                "components/drawer/content.blade.php",
+                "components/drawer/description.blade.php",
+                "components/drawer/drawer.php",
+                "components/drawer/footer.blade.php",
+                "components/drawer/header.blade.php",
+                "components/drawer/title.blade.php",
+                "components/drawer/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "dialog"
+            ],
+            "description": "Bottom panel with a handle, on native <dialog>",
+            "size": 1888
+        },
+        {
+            "name": "hover-card",
+            "type": "component",
+            "files": [
+                "components/hover-card/content.blade.php",
+                "components/hover-card/hover-card.blade.php",
+                "components/hover-card/hover-card.php",
+                "components/hover-card/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "motion"
+            ],
+            "description": "CSS hover and focus preview card",
+            "size": 1273
+        },
+        {
+            "name": "navigation-menu",
+            "type": "component",
+            "files": [
+                "components/navigation-menu/content.blade.php",
+                "components/navigation-menu/item.blade.php",
+                "components/navigation-menu/link.blade.php",
+                "components/navigation-menu/navigation-menu.blade.php",
+                "components/navigation-menu/navigation-menu.php",
+                "components/navigation-menu/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "button",
+                "icon",
+                "motion"
+            ],
+            "description": "Site navigation with popover panels",
+            "size": 1981
+        },
+        {
+            "name": "menubar",
+            "type": "component",
+            "files": [
+                "components/menubar/content.blade.php",
+                "components/menubar/item.blade.php",
+                "components/menubar/label.blade.php",
+                "components/menubar/menubar.blade.php",
+                "components/menubar/menubar.php",
+                "components/menubar/separator.blade.php",
+                "components/menubar/shortcut.blade.php",
+                "components/menubar/trigger.blade.php",
+                "js/menubar.js"
+            ],
+            "dependsOn": [
+                "dropdown-menu"
+            ],
+            "description": "Desktop-style menu bar, optional arrow-key JS",
+            "size": 2737
+        },
+        {
+            "name": "context-menu",
+            "type": "component",
+            "files": [
+                "components/context-menu/content.blade.php",
+                "components/context-menu/context-menu.php",
+                "components/context-menu/item.blade.php",
+                "components/context-menu/label.blade.php",
+                "components/context-menu/separator.blade.php",
+                "components/context-menu/shortcut.blade.php",
+                "components/context-menu/trigger.blade.php",
+                "js/context-menu.js"
+            ],
+            "dependsOn": [
+                "dropdown-menu"
+            ],
+            "description": "Right-click menu. context-menu.js opens it at the pointer",
+            "size": 2324
+        },
+        {
+            "name": "calendar",
+            "type": "component",
+            "files": [
+                "components/calendar/calendar.blade.php",
+                "components/calendar/calendar.php"
+            ],
+            "dependsOn": [
+                "button",
+                "icon"
+            ],
+            "description": "Server-rendered month grid with day links",
+            "size": 2037
+        },
+        {
+            "name": "command",
+            "type": "component",
+            "files": [
+                "components/command/command.blade.php",
+                "components/command/command.php",
+                "components/command/empty.blade.php",
+                "components/command/group.blade.php",
+                "components/command/input.blade.php",
+                "components/command/item.blade.php",
+                "components/command/list.blade.php",
+                "js/command.js"
+            ],
+            "dependsOn": [
+                "icon"
+            ],
+            "description": "Search and pick from a list. command.js adds filtering and keyboard",
+            "size": 4039
+        },
+        {
+            "name": "carousel",
+            "type": "component",
+            "files": [
+                "components/carousel/carousel.blade.php",
+                "components/carousel/carousel.php",
+                "components/carousel/content.blade.php",
+                "components/carousel/item.blade.php",
+                "components/carousel/next.blade.php",
+                "components/carousel/previous.blade.php",
+                "js/carousel.js"
+            ],
+            "dependsOn": [
+                "button",
+                "icon"
+            ],
+            "description": "CSS scroll-snap slides, optional arrows",
+            "size": 3031
+        },
+        {
+            "name": "sidebar-theme",
+            "type": "style",
+            "files": [
+                "css/sidebar-theme.css"
+            ],
+            "dependsOn": [],
+            "description": "The --sidebar-* tokens, only the sidebar needs them",
+            "size": 1127
+        },
+        {
+            "name": "sidebar",
+            "type": "component",
+            "files": [
+                "components/sidebar/content.blade.php",
+                "components/sidebar/footer.blade.php",
+                "components/sidebar/group-label.blade.php",
+                "components/sidebar/group.blade.php",
+                "components/sidebar/header.blade.php",
+                "components/sidebar/inset.blade.php",
+                "components/sidebar/menu-button.blade.php",
+                "components/sidebar/menu.blade.php",
+                "components/sidebar/provider.blade.php",
+                "components/sidebar/sidebar.blade.php",
+                "components/sidebar/sidebar.php",
+                "components/sidebar/trigger.blade.php"
+            ],
+            "dependsOn": [
+                "button",
+                "icon",
+                "sidebar-theme",
+                "motion"
+            ],
+            "description": "App sidebar: a column on desktop, a popover on phones, no JS",
+            "size": 3280
+        }
+    ]
+}

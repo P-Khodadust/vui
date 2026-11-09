@@ -1,0 +1,1 @@
+{!! empty_header(raw($slot), attrs: $attributes->getAttributes()) !!}

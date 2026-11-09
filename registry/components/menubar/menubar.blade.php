@@ -1,0 +1,1 @@
+{!! menubar(raw($slot), attrs: $attributes->getAttributes()) !!}

@@ -1,0 +1,1 @@
+{!! tabs_list(raw($slot), attrs: $attributes->getAttributes()) !!}

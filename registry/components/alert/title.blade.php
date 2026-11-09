@@ -1,0 +1,1 @@
+{!! alert_title(raw($slot), attrs: $attributes->getAttributes()) !!}

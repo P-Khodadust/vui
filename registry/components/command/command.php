@@ -1,0 +1,7 @@
+<?php
+function command($c='',$class='',$attrs=[]){return el('div','command',"flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",$c,$class,$attrs);}
+function command_input($class='',$attrs=[]){return el('div','command-input-wrapper',"flex h-9 items-center gap-2 border-b px-3 focus-within:border-ring",raw(icon('m21 21-4.34-4.34M19 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0','size-4 shrink-0 opacity-50').el('input','command-input',"h-10 w-full bg-transparent py-3 text-sm outline-hidden placeholder:text-muted-foreground",null,$class,$attrs)));}
+function command_list($c='',$class='',$attrs=[]){return el('div','command-list',"max-h-[300px] overflow-x-hidden overflow-y-auto",$c,$class,$attrs);}
+function command_empty($c='No results found.',$class='',$attrs=[]){return el('div','command-empty',"py-6 text-center text-sm",$c,$class,['hidden'=>true]+$attrs);}
+function command_group($c='',$heading='',$class='',$attrs=[]){return el('div','command-group',"overflow-hidden p-1",raw(($heading?el('div',null,"px-2 py-1.5 text-xs font-medium text-muted-foreground",$heading):'').h($c)),$class,$attrs);}
+function command_item($c='',$class='',$attrs=[]){$a=isset($attrs['href']);return el($a?'a':'button','command-item',"relative flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-start text-sm outline-hidden select-none not-data-[selected]:hover:bg-accent focus-visible:bg-accent disabled:opacity-50 data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground",$c,$class,['type'=>$a?null:'button']+$attrs);}

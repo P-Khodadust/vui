@@ -1,0 +1,1 @@
+{!! collapsible_trigger(raw($slot), attrs: $attributes->getAttributes()) !!}

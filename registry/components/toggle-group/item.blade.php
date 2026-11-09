@@ -1,0 +1,2 @@
+@props(['name', 'value' => '', 'checked' => false, 'type' => 'radio', 'variant' => 'default', 'size' => 'default'])
+{!! toggle_group_item(raw($slot), $name, $value, $checked, $type, $variant, $size, $attributes->get('class', ''), $attributes->except('class')->getAttributes()) !!}

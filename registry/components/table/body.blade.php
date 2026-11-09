@@ -1,0 +1,1 @@
+{!! table_body(raw($slot), attrs: $attributes->getAttributes()) !!}

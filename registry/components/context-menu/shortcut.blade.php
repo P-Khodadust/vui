@@ -1,0 +1,1 @@
+{!! context_menu_shortcut(raw($slot), attrs: $attributes->getAttributes()) !!}

@@ -1,0 +1,1 @@
+{!! sidebar_group_label(raw($slot), attrs: $attributes->getAttributes()) !!}

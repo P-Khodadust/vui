@@ -1,0 +1,1 @@
+{!! table_footer(raw($slot), attrs: $attributes->getAttributes()) !!}

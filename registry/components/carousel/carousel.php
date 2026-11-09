@@ -1,0 +1,7 @@
+<?php
+function carousel($c='',$class='',$attrs=[]){return el('div','carousel',"relative",$c,$class,['role'=>'region','aria-roledescription'=>'carousel']+$attrs);}
+function carousel_content($c='',$class='',$attrs=[]){return el('div','carousel-content',"flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth rounded-[inherit] [scrollbar-width:none] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 motion-reduce:scroll-auto",$c,$class,['tabindex'=>0]+$attrs);}
+function carousel_item($c='',$class='',$attrs=[]){return el('div','carousel-item',"min-w-0 shrink-0 grow-0 basis-full snap-start",$c,$class,['role'=>'group','aria-roledescription'=>'slide']+$attrs);}
+// Arrows stay hidden until carousel.js loads. Without it: swipe, scroll, arrow keys.
+function carousel_previous($label='Previous slide',$class='',$attrs=[]){return el('button','carousel-previous',cn(button_classes('outline','icon'),"absolute -start-12 top-1/2 size-8 -translate-y-1/2 rounded-full"),raw(icon('m15 18-6-6 6-6','size-4 rtl:rotate-180').'<span class="sr-only">'.e($label).'</span>'),$class,['type'=>'button','hidden'=>true]+$attrs);}
+function carousel_next($label='Next slide',$class='',$attrs=[]){return el('button','carousel-next',cn(button_classes('outline','icon'),"absolute -end-12 top-1/2 size-8 -translate-y-1/2 rounded-full"),raw(icon('m9 18 6-6-6-6','size-4 rtl:rotate-180').'<span class="sr-only">'.e($label).'</span>'),$class,['type'=>'button','hidden'=>true]+$attrs);}

@@ -1,0 +1,1 @@
+{!! table_head(raw($slot), attrs: $attributes->getAttributes()) !!}

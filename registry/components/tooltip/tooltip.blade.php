@@ -1,0 +1,1 @@
+{!! tooltip(raw($slot), attrs: $attributes->getAttributes()) !!}

@@ -1,0 +1,1 @@
+{!! dialog_header(raw($slot), attrs: $attributes->getAttributes()) !!}

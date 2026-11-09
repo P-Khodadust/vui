@@ -1,0 +1,1 @@
+{!! radio_group(raw($slot), attrs: $attributes->getAttributes()) !!}

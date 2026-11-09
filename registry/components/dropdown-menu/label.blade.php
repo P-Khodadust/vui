@@ -1,0 +1,1 @@
+{!! dropdown_menu_label(raw($slot), attrs: $attributes->getAttributes()) !!}

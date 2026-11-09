@@ -1,0 +1,1 @@
+{!! form_message(raw($slot), attrs: $attributes->getAttributes()) !!}

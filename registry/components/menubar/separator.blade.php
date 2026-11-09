@@ -1,0 +1,1 @@
+{!! menubar_separator(attrs: $attributes->getAttributes()) !!}

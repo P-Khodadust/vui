@@ -1,0 +1,1 @@
+{!! scroll_area(raw($slot), attrs: $attributes->getAttributes()) !!}

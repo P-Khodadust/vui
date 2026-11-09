@@ -1,0 +1,1 @@
+{!! sidebar_menu(raw($slot), attrs: $attributes->getAttributes()) !!}

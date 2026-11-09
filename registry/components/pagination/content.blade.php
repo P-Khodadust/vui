@@ -1,0 +1,1 @@
+{!! pagination_content(raw($slot), attrs: $attributes->getAttributes()) !!}

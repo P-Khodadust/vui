@@ -1,0 +1,1 @@
+{!! date_picker(attrs: $attributes->getAttributes()) !!}

@@ -1,0 +1,1 @@
+{!! carousel_item(raw($slot), attrs: $attributes->getAttributes()) !!}

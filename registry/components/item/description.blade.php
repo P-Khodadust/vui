@@ -1,0 +1,1 @@
+{!! item_description(raw($slot), attrs: $attributes->getAttributes()) !!}

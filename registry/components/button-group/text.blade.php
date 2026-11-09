@@ -1,0 +1,1 @@
+{!! button_group_text(raw($slot), attrs: $attributes->getAttributes()) !!}

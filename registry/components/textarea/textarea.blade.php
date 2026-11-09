@@ -1,0 +1,1 @@
+{!! textarea(raw($slot), attrs: $attributes->getAttributes()) !!}

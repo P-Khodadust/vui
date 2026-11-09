@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+// Prints the byte size of every registry file; exits 1 over budget. --write syncs files + size into registry.json.
+$root = dirname(__DIR__) . '/registry';
+$reg = json_decode(file_get_contents("$root/registry.json"), true);
+const JS_BUDGET = 2048;
+const BUDGET = 2048; // per item: PHP + Blade wrappers
+const OVERRIDES = [
+    'core' => 1229,
+    'theme' => 3072, // design tokens, not logic
+    // Spec allows these three over 2 KB. dialog, dropdown-menu: 6-7 sub-components means 6-7 Blade wrappers (~80 B each), their PHP alone is ~2 KB.
+    // tabs: the trigger's state classes are one long string (~800 B) plus roving-focus attributes.
+    'dialog' => 2600,
+    'dropdown-menu' => 2550,
+    'tabs' => 2150,
+    'motion' => 2300, // one shared file instead of per-component classes, used by 16 components
+    // sidebar: upstream is 21 KB. 12 sub-components mean 12 Blade wrappers (~1 KB), its PHP alone is ~2.2 KB.
+    'sidebar' => 3300,
+];
+$bad = 0;
+foreach ($reg['items'] as &$item) {
+    $n = $item['name'];
+    if (is_dir("$root/components/$n")) {
+        $item['files'] = array_map(fn($f) => substr($f, strlen($root) + 1), glob("$root/components/$n/*"));
+        if (is_file("$root/js/$n.js")) $item['files'][] = "js/$n.js";
+    }
+    $total = 0;
+    foreach ($item['files'] as $f) {
+        $s = filesize("$root/$f");
+        $js = str_ends_with($f, '.js');
+        if (!$js) $total += $s;
+        $over = $js && $s > JS_BUDGET;
+        $bad += $over;
+        printf("  %6d  %s%s\n", $s, $f, $over ? '  OVER ' . JS_BUDGET : '');
+    }
+    $max = OVERRIDES[$n] ?? BUDGET;
+    $over = $total > $max;
+    $bad += $over;
+    printf("%-16s %6d / %d B%s\n", $n, $total, $max, $over ? '  OVER BUDGET' : '');
+    $item['size'] = array_sum(array_map(fn($f) => filesize("$root/$f"), $item['files']));
+}
+unset($item);
+if (in_array('--write', $argv)) file_put_contents("$root/registry.json", json_encode($reg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+echo $bad ? "size: $bad over budget\n" : "size: ok\n";
+exit($bad ? 1 : 0);

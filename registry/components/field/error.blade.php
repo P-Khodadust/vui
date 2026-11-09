@@ -1,0 +1,1 @@
+{!! field_error(raw($slot), attrs: $attributes->getAttributes()) !!}

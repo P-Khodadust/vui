@@ -1,0 +1,1 @@
+{!! empty_(raw($slot), attrs: $attributes->getAttributes()) !!}

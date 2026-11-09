@@ -1,0 +1,1 @@
+{!! card_action(raw($slot), attrs: $attributes->getAttributes()) !!}
