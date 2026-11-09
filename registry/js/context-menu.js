@@ -12,6 +12,16 @@ addEventListener('contextmenu', e => {
     m.style.left = Math.max(8, Math.min(x, innerWidth - m.offsetWidth - 8)) + 'px'
     m.style.top = Math.max(8, Math.min(y, innerHeight - m.offsetHeight - 8)) + 'px'
   }
-  // Linux and macOS fire this on mouse down: the mouse up would light-dismiss a popover opened now.
-  e.buttons ? addEventListener('pointerup', () => setTimeout(open), { once: true }) : open()
+  // Linux, macOS and touch fire this while pressed: the release would light-dismiss a popover opened now.
+  if (!e.buttons && e.pointerType != 'touch') return open()
+  const after = () => { removeEventListener('pointerup', after); removeEventListener('pointercancel', after); setTimeout(open) }
+  addEventListener('pointerup', after)
+  addEventListener('pointercancel', after)
 })
+// iOS Safari never fires contextmenu, so a long press stands in for it.
+let hold
+addEventListener('touchstart', e => {
+  const t = e.target.closest?.('[data-slot=context-menu-trigger]'), { clientX, clientY } = e.touches[0]
+  if (t) hold = setTimeout(() => t.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, buttons: 1, clientX, clientY })), 600)
+}, { passive: true })
+for (const n of ['touchmove', 'touchend', 'touchcancel']) addEventListener(n, () => clearTimeout(hold), { passive: true })

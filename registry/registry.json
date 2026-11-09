@@ -230,7 +230,7 @@
                 "motion"
             ],
             "description": "CSS hover/focus tooltip, optional Esc JS",
-            "size": 1857
+            "size": 2063
         },
         {
             "name": "switch",
@@ -731,7 +731,7 @@
                 "motion"
             ],
             "description": "CSS hover and focus preview card",
-            "size": 1273
+            "size": 1438
         },
         {
             "name": "navigation-menu",
@@ -789,7 +789,7 @@
                 "dropdown-menu"
             ],
             "description": "Right-click menu. context-menu.js opens it at the pointer",
-            "size": 2324
+            "size": 3023
         },
         {
             "name": "calendar",

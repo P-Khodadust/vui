@@ -74,16 +74,14 @@ function page(string $title, string $slug, string $body, array $o = []): void {
     $home = $slug == 'index';
     $link = fn($s, $t, $x = '') => '<a href="' . $s . '.html" data-name="' . e(strtolower($t)) . '"' . ($s == $slug ? ' aria-current="page"' : '') . "$x>" . e($t) . '</a>';
     $nav = '<nav id="nav" popover aria-label="Components"><div class="nav-filter">' . input(attrs: ['type' => 'search', 'placeholder' => 'Filter', 'aria-label' => 'Filter components', 'data-filter' => '#nav']) . '</div>'
-        . '<div data-group>' . $link('index', 'Introduction') . $link('components', 'All components') . $link('rtl', 'فارسی', ' lang="fa"') . '</div>';
+        . '<div data-group>' . $link('index', 'Introduction') . $link('components', 'All components') . '<a href="index.html#install" data-name="install">Install</a>' . $link('rtl', 'فارسی', ' lang="fa"') . '</div>';
     foreach ($groups as $g => $names) $nav .= '<div data-group><p>' . e($g) . '</p>' . implode('', array_map(fn($n) => $link($n, $examples[$n]['title']), $names)) . '</div>';
     $nav .= '</nav>';
     $svg = fn($inner, $x = '') => '<svg class="size-[18px]' . $x . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $inner . '</svg>';
-    $head = $rtl ? "document.documentElement.classList.toggle('dark',s.dark=='1'||(!s.dark&&matchMedia('(prefers-color-scheme:dark)').matches))"
-        : "const d=s.dir||'ltr',h=document.documentElement;h.dir=d;h.lang=d=='rtl'?'fa':'en';h.classList.toggle('dark',s.dark=='1'||(!s.dark&&matchMedia('(prefers-color-scheme:dark)').matches))";
+    $head = "document.documentElement.classList.toggle('dark',s.dark=='1'||(!s.dark&&matchMedia('(prefers-color-scheme:dark)').matches))";
     $top = '<header class="top' . ($home ? ' top-home dark lapis' : '') . '"><a class="brand" href="index.html">' . mark() . '</a>'
         . '<a class="top-link" href="components.html">Components</a><a class="top-link" href="index.html#install">Install</a><span class="flex-1"></span>'
         . ($home ? '' : '<button class="' . e(button_classes('outline', 'sm')) . ' md:hidden" popovertarget="nav">Menu</button>')
-        . ($rtl ? '' : button(raw($svg('<path d="M12 3v18M8 8l-5 4 5 4zM16 8l5 4-5 4z"/>')), 'ghost', 'icon', attrs: ['id' => 'dir-toggle', 'aria-label' => 'Toggle text direction', 'title' => 'Flip text direction']))
         . button(raw($svg('<path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>', ' dark:hidden') . $svg('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>', ' hidden dark:block')), 'ghost', 'icon', attrs: ['id' => 'theme-toggle', 'aria-label' => 'Toggle dark mode', 'title' => 'Toggle dark mode'])
         . '<a class="' . e(button_classes('ghost', 'icon')) . '" href="https://github.com/P-Khodadust/vui" aria-label="vui on GitHub" title="GitHub"><svg class="size-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5"/></svg></a></header>';
     $main = $home ? "<main>$body</main>" : "<div class=\"shell\">$nav<main class=\"doc\">$body</main></div>";
@@ -112,14 +110,14 @@ foreach ($examples as $n => $ex) {
     $needs = array_map(fn($d) => isset($examples[$d]) ? '<a href="' . $d . '.html">' . e($examples[$d]['title']) . '</a>' : e($d), $items[$n]['dependsOn']);
     $rows = '';
     foreach ($ex['props'] as [$name, $type, $def, $desc])
-        $rows .= table_row(raw(table_cell(raw('<code dir="ltr" class="font-mono text-xs">' . e($name) . '</code>'), 'whitespace-normal') . table_cell(raw('<code dir="ltr" class="font-mono text-xs">' . e($type) . '</code>'), 'whitespace-normal') . table_cell(raw('<code dir="ltr" class="font-mono text-xs">' . e($def) . '</code>'), 'whitespace-normal') . table_cell($desc, 'whitespace-normal')));
+        $rows .= table_row(raw(implode('', array_map(fn($k, $v) => table_cell($k == 'Notes' ? $v : raw('<code dir="ltr" class="font-mono text-xs">' . e($v) . '</code>'), 'whitespace-normal', ['data-label' => $k]), ['Name', 'Type', 'Default', 'Notes'], [$name, $type, $def, $desc]))));
     page($ex['title'], $n,
         '<header class="head"><h1 class="display">' . e($ex['title']) . '</h1><p class="lede">' . e($items[$n]['description']) . '.</p>'
         . '<div class="facts"><dl>' . $facts . '</dl>' . ($first ? button('Copy source', 'outline', 'sm', attrs: ['data-copy' => $first]) : '') . '</div>'
         . ($needs ? '<p class="needs">Needs ' . implode(', ', $needs) . '.</p>' : '') . '</header>'
         . '<section aria-label="Preview" class="stage flex min-h-56 flex-wrap items-center justify-center gap-3 p-6 md:p-12">' . render($ex['php']) . '</section>'
         . '<div class="slab">' . code('php vui add ' . implode(' ', [$n, ...used($ex['php'], $n)]), 'cli', 'Install') . code($ex['php'], 'php', 'PHP', 'php') . code($ex['blade'], 'blade', 'Blade', 'blade') . '</div>'
-        . '<section class="grid gap-3"><h2 class="sub">Props</h2>' . str_replace('<div data-slot="table-container"', '<div tabindex="0" data-slot="table-container"', table(raw(table_header(raw(table_row(raw(table_head('Name') . table_head('Type') . table_head('Default') . table_head('Notes'))))) . table_body(raw($rows))))) . '</section>'
+        . '<section class="props grid gap-3"><h2 class="sub">Props</h2>' . str_replace('<div data-slot="table-container"', '<div tabindex="0" data-slot="table-container"', table(raw(table_header(raw(table_row(raw(table_head('Name') . table_head('Type') . table_head('Default') . table_head('Notes'))))) . table_body(raw($rows))))) . '</section>'
         . (isset($ex['js']) ? alert(raw(alert_title('JavaScript') . alert_description($ex['js']))) : '')
         . '<details class="src"><summary><h2 class="sub">Source</h2></summary><div class="slab">' . $sources . '</div></details>');
 }
@@ -151,17 +149,17 @@ $invoice = fn(array $t, string $id) => card(raw(
     card_content(raw('<div class="grid gap-4">' . form_field("$id-customer", $t['customer'], $t['name'])
         . '<div class="grid gap-2">' . label($t['amount'], attrs: ['for' => "$id-amount"]) . input_group(raw(input_group_input(attrs: ['id' => "$id-amount", 'value' => $t['sum'], 'inputmode' => 'decimal']) . input_group_addon($t['unit'], 'inline-end'))) . '</div>'
         . '<div class="flex items-center justify-between gap-3">' . label($t['copy'], attrs: ['for' => "$id-copy"]) . switch_(attrs: ['id' => "$id-copy", 'checked' => true]) . '</div></div>')) .
-    card_footer(raw(button($t['send'], class: 'flex-1', attrs: ['onclick' => "toast('{$t['sent']}')"]) . button($t['save'], 'outline')), 'gap-2')
+    card_footer(raw(button($t['send'], class: 'flex-1', attrs: ['onclick' => "toast('{$t['sent']}')"]) . button($t['save'], 'outline', attrs: ['onclick' => "toast('{$t['saved']}')"])), 'mt-auto flex-wrap gap-2')
 ));
 $side = fn(string $lang, string $dir, array $t) => '<div class="side" dir="' . $dir . '" lang="' . $lang . '"><div class="pitch dark lapis">'
     . ($lang == 'en' ? "<h1 class=\"display\">{$t['h']}</h1>" : "<p class=\"display\">{$t['h']}</p>")
     . "<p class=\"pitch-sub\">{$t['p']}</p><div class=\"flex flex-wrap gap-3\"><a class=\"" . e(button_classes('default', 'lg')) . "\" href=\"components.html\">{$t['browse']}</a><a class=\"" . e(button_classes('outline', 'lg')) . "\" href=\"#install\">{$t['install']}</a></div></div>"
     . "<div class=\"plate glaze\"><code class=\"tag\" dir=\"ltr\">dir=\"$dir\"</code>" . $invoice($t, "h-$lang") . '</div></div>';
-$facade = '<section class="facade"><div class="wall wall-base" aria-hidden="true"></div><div class="wall wall-light" aria-hidden="true"></div><div class="facade-in" dir="ltr">'
-    . $side('en', 'ltr', ['h' => 'Tiny components for PHP and Laravel', 'p' => 'A small CLI copies the source into your project. There is no runtime package, and you carry only what you add.', 'browse' => 'Browse components', 'install' => 'Install', 'title' => 'New invoice', 'desc' => 'Send it now or keep a draft.', 'badge' => 'Draft', 'customer' => 'Customer', 'name' => 'Sara Ahmadi', 'amount' => 'Amount', 'sum' => '1,250.00', 'unit' => 'USD', 'copy' => 'Email a copy to the customer', 'send' => 'Send invoice', 'save' => 'Save draft', 'sent' => 'Invoice sent'])
+$facade = '<section class="facade"><div class="wall wall-base" aria-hidden="true"></div><div class="wall wall-light" aria-hidden="true"></div><div class="facade-in">'
+    . $side('en', 'ltr', ['h' => 'Tiny components for PHP and Laravel', 'p' => 'A small CLI copies the source into your project. There is no runtime package, and you carry only what you add.', 'browse' => 'Browse components', 'install' => 'Install', 'title' => 'New invoice', 'desc' => 'Send it now or keep a draft.', 'badge' => 'Draft', 'customer' => 'Customer', 'name' => 'Sara Ahmadi', 'amount' => 'Amount', 'sum' => '1,250.00', 'unit' => 'USD', 'copy' => 'Email a copy to the customer', 'send' => 'Send invoice', 'save' => 'Save draft', 'saved' => 'Draft saved', 'sent' => 'Invoice sent'])
     . '<div class="axis" aria-hidden="true"><svg viewBox="0 0 80 80"><path d="' . STAR . '"/></svg></div>'
-    . $side('fa', 'rtl', ['h' => 'کامپوننت‌های کوچک برای PHP و لاراول', 'p' => 'یک ابزار خط فرمان کوچک، سورس را در پروژه‌ات کپی می‌کند. هیچ پکیجی در زمان اجرا لازم نیست و فقط همان چیزی را که اضافه کنی همراهت داری.', 'browse' => 'مشاهده کامپوننت‌ها', 'install' => 'نصب', 'title' => 'فاکتور جدید', 'desc' => 'همین حالا بفرست یا پیش‌نویس نگه دار.', 'badge' => 'پیش‌نویس', 'customer' => 'مشتری', 'name' => 'سارا احمدی', 'amount' => 'مبلغ', 'sum' => '۱۲۵٬۰۰۰٬۰۰۰', 'unit' => 'تومان', 'copy' => 'یک نسخه برای مشتری ایمیل شود', 'send' => 'ارسال فاکتور', 'save' => 'ذخیره پیش‌نویس', 'sent' => 'فاکتور ارسال شد'])
-    . '</div><p class="facade-note">The two sides are one PHP function, called twice. Only the words and <code dir="ltr">dir</code> change.</p></section>';
+    . $side('fa', 'rtl', ['h' => 'کامپوننت‌های کوچک برای PHP و لاراول', 'p' => 'یک ابزار خط فرمان کوچک، سورس را در پروژه‌ات کپی می‌کند. هیچ پکیجی در زمان اجرا لازم نیست و فقط همان چیزی را که اضافه کنی همراهت داری.', 'browse' => 'مشاهده کامپوننت‌ها', 'install' => 'نصب', 'title' => 'فاکتور جدید', 'desc' => 'همین حالا بفرست یا پیش‌نویس نگه دار.', 'badge' => 'پیش‌نویس', 'customer' => 'مشتری', 'name' => 'سارا احمدی', 'amount' => 'مبلغ', 'sum' => '۱۲۵٬۰۰۰٬۰۰۰', 'unit' => 'تومان', 'copy' => 'یک نسخه برای مشتری ایمیل شود', 'send' => 'ارسال فاکتور', 'save' => 'ذخیره پیش‌نویس', 'saved' => 'پیش‌نویس ذخیره شد', 'sent' => 'فاکتور ارسال شد'])
+    . '</div><p class="facade-note"><span class="swipe-hint">Swipe to see the other side. </span>The two sides are one PHP function, called twice. Only the words and <code dir="ltr">dir</code> change.</p></section>';
 
 $tile = fn(string $slug, string $title, string $html, string $class = '') => '<div class="tile ' . $class . '"><div class="tile-body">' . $html . '</div><a class="tile-cap" href="' . $slug . '.html">' . e($title) . '</a></div>';
 $row = fn(string $id, string $text, bool $on = false) => '<div class="flex items-center justify-between gap-4">' . label($text, attrs: ['for' => $id]) . switch_(attrs: ['id' => $id, 'checked' => $on]) . '</div>';
@@ -172,7 +170,7 @@ $mosaic = '<div class="mosaic">'
         table_row(raw(table_cell('INV-1002') . table_cell(raw(badge('Pending', 'outline'))) . table_cell('$150.00', 'text-end'))) .
         table_row(raw(table_cell('INV-1003') . table_cell(raw(badge('Overdue', 'destructive'))) . table_cell('$350.00', 'text-end'))))))), 'lg:col-span-5 md:col-span-6')
     . $tile('switch', 'Switch', '<div class="grid gap-4">' . $row('w-a', 'New comments', true) . $row('w-b', 'Weekly summary') . $row('w-c', 'Product news', true) . '</div>', 'lg:col-span-3 md:col-span-6')
-    . $tile('command', 'Command', command(raw(command_input(attrs: ['placeholder' => 'Search commands', 'aria-label' => 'Search commands']) . command_list(raw(command_empty('Nothing found.') . command_group(raw(command_item('New invoice') . command_item('Add customer') . command_item('Export to CSV')), 'Suggestions')))), 'rounded-lg border'), 'lg:col-span-4 md:col-span-6')
+    . $tile('command', 'Command', command(raw(command_input(attrs: ['placeholder' => 'Search commands', 'aria-label' => 'Search commands']) . command_list(raw(command_empty('Nothing found.') . command_group(raw(implode('', array_map(fn($t) => command_item($t, attrs: ['onclick' => "toast('$t')"]), ['New invoice', 'Add customer', 'Export to CSV']))), 'Suggestions')))), 'rounded-lg border'), 'lg:col-span-4 md:col-span-6')
     . $tile('input-otp', 'Input OTP', '<div class="grid justify-items-center gap-3 text-center"><p class="text-sm">Enter the code we sent you</p>' . input_otp(6, attrs: ['aria-label' => 'One-time code']) . '</div>', 'tile-saffron lg:col-span-4 md:col-span-6')
     . $tile('tabs', 'Tabs', tabs(raw(tabs_list(raw(tabs_trigger('Account', 'w-t1', true) . tabs_trigger('Password', 'w-t2') . tabs_trigger('Billing', 'w-t3'))) . tabs_content('Change your name and email here.', 'w-t1', true, 'text-sm') . tabs_content('Choose a new password.', 'w-t2', false, 'text-sm') . tabs_content('Manage your plan and invoices.', 'w-t3', false, 'text-sm'))), 'lg:col-span-4 md:col-span-6')
     . $tile('dialog', 'Dialog, menu and popover', '<div class="flex flex-wrap items-center justify-center gap-3">' . dialog_trigger('Edit profile', 'w-d', button_classes('default'))
@@ -261,9 +259,7 @@ foreach (glob("$root/registry/js/*.js") as $f) copy($f, __DIR__ . '/js/' . basen
 file_put_contents(__DIR__ . '/js/site.js', <<<'JS'
 {
   const h = document.documentElement, $ = id => document.getElementById(id), put = (k, v) => { try { localStorage[k] = v } catch (e) {} }
-  const dir = $('dir-toggle'), dark = $('theme-toggle')
-  const sync = () => { dir?.setAttribute('aria-pressed', h.dir == 'rtl'); dark.setAttribute('aria-pressed', h.classList.contains('dark')) }
-  dir?.addEventListener('click', () => { h.dir = h.dir == 'rtl' ? 'ltr' : 'rtl'; h.lang = h.dir == 'rtl' ? 'fa' : 'en'; put('dir', h.dir); sync() })
+  const dark = $('theme-toggle'), sync = () => dark.setAttribute('aria-pressed', h.classList.contains('dark'))
   dark.addEventListener('click', () => { put('dark', h.classList.toggle('dark') ? '1' : '0'); sync() })
   sync()
 
@@ -284,6 +280,59 @@ file_put_contents(__DIR__ . '/js/site.js', <<<'JS'
     root.querySelectorAll('[data-group]').forEach(g => any = !(g.hidden = !g.querySelector('[data-name]:not([hidden])')) || any)
     const none = root.querySelector('[data-none]')
     if (none) none.hidden = any
+  })
+
+  // This site has no server to answer the preview links, so they must not jump to the top or reload.
+  addEventListener('click', e => {
+    const h = e.target.closest('main a[href]')?.getAttribute('href')
+    if (h && /^[#?]/.test(h) && !$(h.slice(1))) e.preventDefault()
+  })
+
+  // Docs only: the component's days and arrows are links, here the month is redrawn in place.
+  document.querySelectorAll('main [data-slot=calendar]:not([data-slot=date-picker] *)').forEach(cal => {
+    const body = cal.querySelector('tbody'), [prev, next] = cal.querySelectorAll('div > a'), day = /\d{4}-\d\d-\d\d/
+    if (!next) return
+    const first = body.querySelector('a'), cell = first.parentNode.cloneNode(true), title = prev.nextSibling, iso = d => d.toLocaleDateString('sv')
+    const month = new Date(first.href.match(day)[0] + 'T00:00'), start = (month.getDay() - body.rows[0].querySelectorAll('td:empty').length + 7) % 7
+    const name = new Intl.DateTimeFormat((cal.closest('[lang]')?.lang || 'en') + '-u-ca-gregory', { month: 'long', year: 'numeric' })
+    let picked = cal.querySelector('[aria-current]')?.href.match(day)[0], row
+    const draw = () => {
+      const y = month.getFullYear(), m = month.getMonth(), pad = (month.getDay() - start + 7) % 7, n = new Date(y, m + 1, 0).getDate()
+      title.nodeValue = name.format(month)
+      body.textContent = ''
+      for (let i = 0; i < pad + n; i++) {
+        if (i % 7 == 0) row = body.insertRow()
+        if (i < pad) { row.insertCell(); continue }
+        const td = cell.cloneNode(true), a = td.firstChild, id = iso(new Date(y, m, i - pad + 1))
+        a.textContent = i - pad + 1
+        a.setAttribute('href', '#' + id)
+        if (id == picked) a.setAttribute('aria-current', 'date'); else a.removeAttribute('aria-current')
+        a.toggleAttribute('data-today', id == iso(new Date))
+        row.append(td)
+      }
+    }
+    cal.addEventListener('click', e => {
+      const a = e.target.closest('a')
+      if (!a) return
+      if (a == prev || a == next) { month.setMonth(month.getMonth() + (a == prev ? -1 : 1)); draw(); return }
+      picked = a.href.match(day)[0]
+      body.querySelector('[aria-current]')?.removeAttribute('aria-current')
+      a.setAttribute('aria-current', 'date')
+    })
+  })
+
+  // Docs only: page numbers are links in the component, here the highlight moves in place.
+  document.querySelectorAll('main [data-slot=pagination]').forEach(nav => {
+    const links = [...nav.querySelectorAll('a')], pages = links.slice(1, -1)
+    nav.addEventListener('click', e => {
+      const a = e.target.closest('a'), now = nav.querySelector('[aria-current]')
+      if (!a || !now) return
+      const to = a == links[0] ? pages[pages.indexOf(now) - 1] : a == links.at(-1) ? pages[pages.indexOf(now) + 1] : a
+      if (!to || to == now) return
+      ;[to.className, now.className] = [now.className, to.className]
+      now.removeAttribute('aria-current')
+      to.setAttribute('aria-current', 'page')
+    })
   })
 
   // Pages reload on every click, so put the current link back in view.

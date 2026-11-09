@@ -368,6 +368,7 @@ return [
     ],
     'pagination' => [
         'title' => 'Pagination',
+        'js' => 'None. Page numbers are plain links your server answers. This site has no server, so a docs-only script moves the highlight here.',
         'props' => [['pagination_link($c, $href, $active)', 'string, string, bool', "'', '#', false", ''], ['pagination_previous / pagination_next ($href, $label)', 'string', "'#', 'Previous' / 'Next'", 'Translate the label here'], ['pagination_ellipsis($label)', 'string', "'More pages'", ''], ...$common],
         'php' => <<<'X'
             echo pagination(raw(pagination_content(raw(
@@ -895,7 +896,7 @@ return [
         'js' => 'Needs context-menu.js to open at the pointer. Without it the browser\'s own menu shows. Add dropdown-menu.js for arrow keys.',
         'props' => [['context_menu_trigger($c, $for)', 'string', "'', ''", '$for is the menu id'], ['context_menu_content($c, $id)', 'string', 'required', ''], ['context_menu_item($c, $for, $variant)', 'string', "'', '', 'default'", 'Same as dropdown_menu_item'], ...$common],
         'php' => <<<'X'
-            echo context_menu_trigger('Right click here', 'cm', 'flex h-36 w-72 items-center justify-center rounded-md border border-dashed text-sm');
+            echo context_menu_trigger('Right click or long press here', 'cm', 'flex h-36 w-72 items-center justify-center rounded-md border border-dashed text-sm');
             echo context_menu_content(raw(
                 context_menu_item(raw('Back' . context_menu_shortcut('⌘[')), 'cm') .
                 context_menu_item('Reload', 'cm') .
@@ -904,7 +905,7 @@ return [
             ), 'cm', 'w-52');
             X,
         'blade' => <<<'X'
-            <x-ui.context-menu.trigger for="cm" class="flex h-36 w-72 items-center justify-center rounded-md border border-dashed text-sm">Right click here</x-ui.context-menu.trigger>
+            <x-ui.context-menu.trigger for="cm" class="flex h-36 w-72 items-center justify-center rounded-md border border-dashed text-sm">Right click or long press here</x-ui.context-menu.trigger>
             <x-ui.context-menu.content id="cm" class="w-52">
                 <x-ui.context-menu.item for="cm">Back<x-ui.context-menu.shortcut>⌘[</x-ui.context-menu.shortcut></x-ui.context-menu.item>
                 <x-ui.context-menu.item for="cm">Reload</x-ui.context-menu.item>
@@ -915,7 +916,7 @@ return [
     ],
     'calendar' => [
         'title' => 'Calendar',
-        'js' => 'None. Rendered on the server; days and arrows are links. Gregorian only. Use $week_start 6 and $labels for Persian text.',
+        'js' => 'None. Rendered on the server; days and arrows are links. Gregorian only. Use $week_start 6 and $labels for Persian text. This site has no server, so a docs-only script redraws the month here.',
         'props' => [['month', 'string', 'required', "'2025-02'"], ['selected', 'string', "''", "'2025-02-14'"], ['href', 'string', "''", 'Day link, {date} is filled in. Empty renders plain text'], ['nav', 'string', "''", 'Arrow link, {month} is filled in. Empty hides the arrows'], ['week_start', 'int', '0', '0 Sunday, 1 Monday, 6 Saturday'], ['labels', 'array', '[]', 'Keys: title, weekdays (space separated), prev, next'], ...$common],
         'php' => <<<'X'
             echo calendar('2025-02', '2025-02-14', '?date={date}', '?month={month}', class: 'border');

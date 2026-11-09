@@ -46,6 +46,8 @@
 
 body { background: var(--s-bg); color: var(--s-ink); font-family: var(--font-sans); }
 [hidden] { display: none !important; }
+/* iOS zooms the page when a focused field is under 16px. The OTP field measures its own digits, so it stays as it is. */
+@supports (-webkit-touch-callout: none) { :is(input, textarea, select):not([data-slot=input-otp] *) { font-size: max(16px, 1em); } }
 :focus-visible { outline-color: var(--s-link); }
 .display { font-family: var(--font-display); font-weight: 400; line-height: 1.04; text-wrap: balance; }
 [lang=fa] .display, .display:lang(fa) { line-height: 1.32; }
@@ -58,13 +60,21 @@ body { background: var(--s-bg); color: var(--s-ink); font-family: var(--font-san
 .top-link { padding: .375rem .625rem; border-radius: .375rem; font-size: .875rem; font-weight: 500; }
 .top-link:hover { background: var(--s-hover); }
 .top-home .top-link:hover { background: #21468F; }
-@media (max-width: 30rem) { .top-link { display: none; } }
+@media (max-width: 47.99rem) { .top:not(.top-home) .top-link { display: none; } }
+@media (max-width: 21.99rem) { .top-link[href$="#install"] { display: none; } }
 
 /* Docs shell */
 .shell { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 86rem; margin-inline: auto; }
 .doc { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 2.5rem; padding: 2rem 1rem 4rem; }
-#nav { position: fixed; inset: 3.5rem auto 0 0; width: min(18rem, 86vw); height: auto; margin: 0; padding: .75rem; overflow-y: auto; background: var(--s-bg); color: var(--s-ink); border: 0; border-inline-end: 1px solid var(--s-line); }
-html[dir=rtl] #nav { inset: 3.5rem 0 0 auto; }
+#nav { position: fixed; inset: 0 auto 0 0; width: min(18rem, 86vw); height: auto; margin: 0; padding: .75rem; overflow-y: auto; background: var(--s-bg); color: var(--s-ink); border: 0; border-inline-end: 1px solid var(--s-line); }
+html[dir=rtl] #nav { inset: 0 0 0 auto; }
+#nav::backdrop { background: rgb(10 23 48 / .5); }
+@media (max-width: 47.99rem) {
+  #nav { translate: -100% 0; transition: translate .25s ease-out, display .25s allow-discrete, overlay .25s allow-discrete; }
+  html[dir=rtl] #nav { translate: 100% 0; }
+  #nav:popover-open, html[dir=rtl] #nav:popover-open { translate: 0 0; }
+  @starting-style { #nav:popover-open { translate: -100% 0; } html[dir=rtl] #nav:popover-open { translate: 100% 0; } }
+}
 #nav a { position: relative; display: block; padding: .3rem .625rem .3rem 1.125rem; border-radius: .375rem; font-size: .875rem; color: var(--s-mute); }
 html[dir=rtl] #nav a { padding: .3rem 1.125rem .3rem .625rem; }
 #nav a:hover { background: var(--s-hover); color: var(--s-ink); }
@@ -76,7 +86,7 @@ html[dir=rtl] #nav a { padding: .3rem 1.125rem .3rem .625rem; }
 @media (min-width: 48rem) {
   .shell { grid-template-columns: 15.5rem minmax(0, 1fr); }
   .doc { padding: 3rem 3rem 5rem; }
-  #nav, html[dir=rtl] #nav { display: block; position: sticky; inset: 3.5rem auto auto; align-self: start; width: auto; height: calc(100vh - 3.5rem); }
+  #nav, html[dir=rtl] #nav { display: block; position: sticky; inset: 3.5rem auto auto; translate: none; align-self: start; width: auto; height: calc(100vh - 3.5rem); }
 }
 @media (min-width: 80rem) { .doc { padding-inline: 5rem; } }
 
@@ -88,9 +98,6 @@ html[dir=rtl] #nav a { padding: .3rem 1.125rem .3rem .625rem; }
 .facts dt { font-size: .8125rem; color: var(--s-mute); }
 .facts dd { font-weight: 600; font-variant-numeric: tabular-nums; }
 .needs { font-size: .875rem; color: var(--s-mute); }
-/* English copy on a flipped page keeps its punctuation in place; the block still aligns right. */
-.lede, .needs, .tally-sum, .tally-note, .facade-note, .tile-mini p { unicode-bidi: plaintext; }
-html[dir=rtl] :is(.lede, .needs, .tally-sum, .tally-note, .tile-mini p) { text-align: right; }
 .needs a, .foot p a { color: var(--s-link); text-decoration: underline; text-underline-offset: 3px; }
 .sub { font-family: var(--font-display); font-weight: 400; font-size: 1.625rem; line-height: 1.2; color: var(--s-link); }
 
@@ -104,7 +111,6 @@ html[dir=rtl] :is(.lede, .needs, .tally-sum, .tally-note, .tile-mini p) { text-a
 .slab { display: grid; gap: 1px; overflow: hidden; border-radius: .875rem; background: #24427F; }
 .code { min-width: 0; background: var(--deep); color: #DCE6F7; }
 .code-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .375rem .5rem .375rem 1rem; font-size: .8125rem; font-weight: 600; color: #BCCBE8; }
-html[dir=rtl] .code-bar { padding: .375rem 1rem .375rem .5rem; }
 .code pre { max-height: 32rem; overflow: auto; padding: .25rem 1rem 1.125rem; text-align: left; font-family: var(--font-mono); font-size: .8125rem; line-height: 1.7; }
 .code b { font-weight: inherit; }
 .code .k { color: #7FD9CF; }
@@ -121,28 +127,29 @@ html[dir=rtl] .code-bar { padding: .375rem 1rem .375rem .5rem; }
 .facade { position: relative; overflow: hidden; background: var(--deep); color: #fff; }
 .wall { position: absolute; inset: 0; background: url(wall.svg) 50% 0; }
 .wall-light { filter: brightness(1.75) saturate(1.2); -webkit-mask: radial-gradient(22rem circle at var(--mx, -60rem) var(--my, -60rem), #000, transparent); mask: radial-gradient(22rem circle at var(--mx, -60rem) var(--my, -60rem), #000, transparent); }
-.facade-in { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 3rem; max-width: 92rem; margin-inline: auto; padding: 3rem 1rem 2rem; }
-.side { display: grid; align-content: start; gap: 2rem; }
-.pitch { display: grid; gap: 1.125rem; justify-items: start; }
-.pitch .display { font-size: clamp(2.75rem, 4.7vw, 4.75rem); text-shadow: 0 2px 24px #0a1c44; }
+.facade-in { position: relative; display: grid; grid-template-columns: min(84vw, 30rem) 1.5rem min(84vw, 30rem); gap: .5rem; max-width: 92rem; margin-inline: auto; padding: 2rem 1rem 1.25rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.facade-in::-webkit-scrollbar { display: none; }
+/* Subgrid keeps the two scripts on the same rows even though Persian sets taller. */
+.facade-in { grid-template-rows: repeat(4, auto); align-content: start; }
+.side { display: grid; grid-row: 1 / span 4; grid-template-columns: minmax(0, 1fr); grid-template-rows: subgrid; gap: 0; scroll-snap-align: center; }
+.pitch { display: contents; }
+.pitch .display { align-self: end; }
+.pitch-sub { margin-top: 1.125rem; }
+.pitch > .flex { margin-top: 1.25rem; }
+.pitch .display { font-size: clamp(2.5rem, 4.7vw, 4.75rem); text-shadow: 0 2px 24px #0a1c44; }
 .pitch-sub { max-width: 34rem; font-size: 1.0625rem; line-height: 1.6; color: #DCE6F7; text-shadow: 0 1px 12px #0a1c44; }
-.plate { position: relative; width: 100%; max-width: 24rem; }
+.plate { position: relative; display: grid; grid-template-rows: auto 1fr; width: 100%; max-width: 24rem; margin-top: 1.5rem; }
 .tag { display: block; margin-bottom: .5rem; font-family: var(--font-mono); font-size: .8125rem; color: var(--firoozeh); }
-.axis { display: none; }
-.facade-note { position: relative; max-width: 92rem; margin-inline: auto; padding: 0 1rem 2.5rem; text-align: center; font-size: .9375rem; color: #DCE6F7; text-shadow: 0 1px 12px #0a1c44; }
+.axis { position: relative; grid-row: 1 / span 4; }
+.axis::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 50%; width: 1px; background: linear-gradient(transparent, var(--firoozeh) 12%, var(--firoozeh) 88%, transparent); opacity: .55; }
+.axis svg { position: relative; display: block; width: 100%; margin-top: 4rem; fill: var(--saffron); }
+.facade-note { position: relative; max-width: 92rem; margin-inline: auto; padding: 0 1rem 2rem; text-align: center; font-size: .9375rem; color: #DCE6F7; text-shadow: 0 1px 12px #0a1c44; }
 .facade-note code { font-family: var(--font-mono); color: var(--firoozeh); }
-@media (min-width: 56rem) {
-  /* Subgrid keeps the two scripts on the same rows even though Persian sets taller. */
-  .facade-in { grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; gap: 0; min-height: calc(100vh - 8rem); padding: 3.5rem 2rem 2rem; }
-  .side { grid-row: 1 / span 4; grid-template-rows: subgrid; gap: 0; }
-  .pitch { display: contents; }
-  .pitch .display { align-self: end; }
-  .pitch-sub { margin-top: 1.125rem; }
-  .pitch > .flex { margin-top: 1.25rem; }
+@media (min-width: 46rem) {
+  .facade-in { grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1fr); gap: 0; min-height: calc(100vh - 8rem); padding: 3.5rem 2rem 2rem; overflow: visible; }
+  .swipe-hint { display: none; }
   .plate { justify-self: end; margin-top: 2rem; }
-  .axis { display: block; position: relative; grid-row: 1 / span 4; }
-  .axis::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 50%; width: 1px; background: linear-gradient(transparent, var(--firoozeh) 12%, var(--firoozeh) 88%, transparent); opacity: .55; }
-  .axis svg { position: relative; display: block; width: 3.5rem; margin-top: 45%; fill: var(--saffron); }
+  .axis svg { width: 3.5rem; margin-top: 45%; }
   @media (prefers-reduced-motion: no-preference) {
     .facade-in { perspective: 2400px; }
     .side:first-child { transform-origin: 100% 50%; animation: door-a 1.15s cubic-bezier(.16, 1, .3, 1) .1s both; }
@@ -180,12 +187,12 @@ html[dir=rtl] .code-bar { padding: .375rem 1rem .375rem .5rem; }
 .mosaic-even > .tile { grid-column: auto !important; }
 
 .tile-mini { padding: 0; gap: 0; background: var(--s-raise); color: var(--s-ink); }
-.tile-mini h3 { padding: .875rem 1rem 0; font-weight: 600; }
-.tile-mini h3 a::after { content: ""; position: absolute; inset: 0; }
-.tile-mini h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.tile-mini p { padding: .125rem 1rem 1rem; font-size: .875rem; color: var(--s-mute); }
+.tile-mini > h3 { padding: .875rem 1rem 0; font-weight: 600; }
+.tile-mini > h3 a::after { content: ""; position: absolute; inset: 0; }
+.tile-mini > h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.tile-mini > p { padding: .125rem 1rem 1rem; font-size: .875rem; color: var(--s-mute); }
 .mini { height: 11rem; overflow: hidden; background: var(--background); color: var(--foreground); border-bottom: 1px solid var(--s-line); }
-.mini > div { display: flex; flex-wrap: wrap; align-items: safe center; align-content: safe center; justify-content: safe center; gap: .75rem; height: 133.34%; padding: 1rem; zoom: .75; }
+.mini > div { display: flex; flex-wrap: wrap; align-items: safe center; align-content: safe center; justify-content: safe center; gap: .75rem; height: 100%; padding: 1rem; zoom: .75; }
 /* build.php turns overlays into plain elements here, so each tile shows the surface instead of a lone trigger. */
 .mini [data-open] { position: relative !important; display: flex; flex-direction: column; inset: auto !important; margin: 0; height: auto; max-height: none; }
 .mini :is([data-slot$=dialog-content], [data-slot=sheet-content], [data-slot=drawer-content]) { width: 18rem; max-width: 100%; }
@@ -195,6 +202,8 @@ html[dir=rtl] .code-bar { padding: .375rem 1rem .375rem .5rem; }
 .mini [data-slot=hover-card] { flex-direction: column; align-items: center; gap: .5rem; }
 .mini [data-slot=menubar] { flex-wrap: wrap; width: 13rem; height: auto; }
 .mini [data-slot=menubar] [data-open] { order: 9; width: 100%; }
+
+.stage [data-slot=pagination-content], .tile [data-slot=pagination-content] { flex-wrap: wrap; justify-content: center; }
 
 .picker { display: grid; gap: 1.5rem; }
 .picks { display: grid; grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr)); align-content: start; overflow: clip; border: 1px solid var(--s-line); border-radius: .875rem; }
@@ -210,6 +219,34 @@ html[dir=rtl] .code-bar { padding: .375rem 1rem .375rem .5rem; }
 .tally-sum strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 2.75rem; line-height: 1.1; color: var(--s-link); }
 .tally-note { font-size: .875rem; line-height: 1.6; color: var(--s-mute); }
 @media (min-width: 64rem) { .picker { grid-template-columns: minmax(0, 1fr) 24rem; } .tally { position: sticky; top: 5rem; align-self: start; } }
+
+/* Phones: two columns of picks, and the running total stays on screen while you pick. */
+@media (max-width: 63.99rem) {
+  .picker { display: block; }
+  .tally { display: contents; }
+  .tally-sum { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 .5rem; margin-inline: -1rem; padding: .5rem 1rem; background: var(--s-bg); border-top: 1px solid var(--s-line); font-size: .9375rem; }
+  .tally-sum strong { display: inline; font-size: 1.625rem; }
+  .tally .slab, .tally-note { margin-top: 1rem; }
+}
+@media (max-width: 39.99rem) {
+  .picks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pick { flex-direction: column; align-items: flex-start; gap: 0; padding: .5rem .75rem; }
+  .band { padding-top: 3.25rem; }
+  .band > .lede { margin-bottom: .75rem; font-size: 1rem; }
+  .doc { gap: 2rem; }
+  .mosaic-even { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .mini { height: 7.5rem; }
+  .mini > div { padding: .75rem; zoom: .5; }
+  .tile-mini > h3 { padding: .625rem .75rem; font-size: .875rem; }
+  .tile-mini > p { display: none; }
+  .props thead { display: none; }
+  .props :is(table, tbody, tr) { display: block; }
+  .props tr { padding-block: .625rem; }
+  .props td { display: flex; gap: .75rem; min-width: 0; padding: .125rem 0; }
+  .props td:empty { display: none; }
+  .props td::before { content: attr(data-label); flex: none; width: 3.75rem; font-size: .8125rem; color: var(--s-mute); }
+  .props code { overflow-wrap: anywhere; }
+}
 
 .pair { display: grid; gap: 1rem; }
 .pair .code { overflow: hidden; border-radius: .875rem; }
