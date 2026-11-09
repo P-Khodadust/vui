@@ -110,8 +110,8 @@ t('calendar: nav crosses years', function () {
     ok(str_contains($h, '?m=2024-12'), $h);
 });
 t('calendar: today is marked only in its own month', function () {
-    ok(str_contains(calendar(date('Y-m')), ' bg-accent text-accent-foreground'));
-    ok(!str_contains(calendar('2001-01'), ' bg-accent text-accent-foreground'));
+    ok(str_contains(calendar(date('Y-m')), ' data-today'));
+    ok(!str_contains(calendar('2001-01'), ' data-today'));
 });
 t('calendar: no href renders text, no nav hides the arrows', function () {
     ok(!str_contains(calendar('2025-02'), '<a'));
@@ -142,3 +142,11 @@ t('select: class goes on the wrapper', function () {
     foreach ([select('', class: 'w-full'), select('', attrs: ['class' => 'w-full'])] as $h) ok(preg_match('~select-wrapper" class="[^"]*\bw-full"~', $h) === 1 && !str_contains($h, 'w-fit'), $h);
 });
 t('calendar: odd week_start values are safe', fn() => ok(is_string(calendar('2025-02', week_start: '') . calendar('2025-02', week_start: 8))));
+
+t('date_picker: native input is the fallback, the vui calendar is ready, the trigger waits for JS', function () {
+    $h = date_picker(attrs: ['name' => 'd', 'value' => '2025-02-14']);
+    ok(str_contains($h, 'type="date"') && str_contains($h, 'name="d"') && str_contains($h, 'value="2025-02-14"'), $h);
+    ok(str_contains($h, 'data-slot="calendar"') && str_contains($h, 'February 2025'), $h);
+    ok(preg_match('~data-slot="popover-trigger"[^>]* hidden~', $h) === 1, $h);
+    ok(str_contains($h, 'id="d-picker"') && str_contains($h, 'aria-current="date"'), $h);
+});

@@ -1,5 +1,5 @@
 <?php
-// Server-rendered month, no JS, Gregorian. {date} and {month} are filled into $href and $nav. $labels: title weekdays prev next.
+// {date}, {month} fill $href, $nav. $labels: title weekdays prev next.
 function calendar($month,$selected='',$href='',$nav='',$week_start=0,$labels=[],$class='',$attrs=[]){
 $t=strtotime("$month-01")?:time();
 $week_start=(int)$week_start%7;
@@ -13,7 +13,7 @@ for($i=0;$i<7;$i++)$head.=el('th',null,"size-8 text-[0.8rem] font-normal text-mu
 $rows=str_repeat('<td></td>',$pad);
 for($d=1;$d<=$n;$d++){
 $date=sprintf('%s-%02d',$ym,$d);
-$rows.='<td class="p-0">'.el($href?'a':'span',null,cn(button_classes('ghost','icon'),"size-8 font-normal",$date==$selected?"bg-primary! text-primary-foreground!":($date==date('Y-m-d')?"bg-accent text-accent-foreground":'')),$d,'',['href'=>$href?str_replace('{date}',$date,$href):null,'aria-current'=>$date==$selected?'date':null]).'</td>';
+$rows.='<td class="p-0">'.el($href?'a':'span',null,cn(button_classes('ghost','icon'),"size-8 font-normal data-[today]:bg-accent data-[today]:text-accent-foreground aria-[current=date]:bg-primary! aria-[current=date]:text-primary-foreground!"),$d,'',['href'=>$href?str_replace('{date}',$date,$href):null,'aria-current'=>$date==$selected?'date':null,'data-today'=>$date==date('Y-m-d')]).'</td>';
 if(($pad+$d)%7==0&&$d<$n)$rows.='</tr><tr>';
 }
 $go=fn($m,$d,$side,$label)=>$nav?el('a',null,cn(button_classes('ghost','icon'),"absolute top-0 size-8 $side"),raw(icon($d,'size-4 rtl:rotate-180')),'',['href'=>str_replace('{month}',date('Y-m',strtotime($m,$t)),$nav),'aria-label'=>$label]):'';

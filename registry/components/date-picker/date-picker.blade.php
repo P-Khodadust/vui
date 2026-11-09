@@ -1,1 +1,2 @@
-{!! date_picker(attrs: $attributes->getAttributes()) !!}
+@props(['placeholder' => 'Pick a date', 'weekStart' => 0, 'labels' => []])
+{!! date_picker($attributes->get('class', ''), $attributes->except('class')->getAttributes(), $placeholder, $weekStart, $labels) !!}

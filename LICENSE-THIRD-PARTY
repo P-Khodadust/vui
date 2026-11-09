@@ -1,5 +1,7 @@
 vui reproduces Tailwind class strings, CSS variable names, theme values and
 component structure from shadcn/ui, and icon geometry from Lucide and Feather.
+The documentation site also ships Lalezar, Instrument Sans and Vazirmatn under the
+SIL Open Font License 1.1. See docs/fonts/OFL.txt.
 
 ================================================================
 shadcn/ui  https://github.com/shadcn-ui/ui
