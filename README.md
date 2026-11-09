@@ -226,7 +226,7 @@ The docs include a full [Persian demo page](https://p-khodadust.github.io/vui/rt
 | alert-dialog | 1,709 | | field | 1,978 | | separator | 592 |
 | aspect-ratio | 261 | | font-fa | 217 | | sheet | 1,875 |
 | avatar | 1,066 | | form | 1,857 | | sidebar ⚠️ | 3,280 |
-| badge | 1,334 | | hover-card | 1,273 | | sidebar-theme | 1,127 |
+| badge | 1,334 | | hover-card | 1,438 | | sidebar-theme | 1,127 |
 | breadcrumb | 1,878 | | icon | 333 | | skeleton | 182 |
 | button | 1,747 | | input | 788 | | slider | 465 |
 | button-group | 1,370 | | input-group | 1,920 | | spinner | 304 |
@@ -237,11 +237,11 @@ The docs include a full [Persian demo page](https://p-khodadust.github.io/vui/rt
 | collapsible | 674 | | menubar | 1,675 | | theme | 2,706 |
 | combobox | 557 | | motion ⚠️ | 2,262 | | toast | 1,279 |
 | command | 1,992 | | navigation-menu | 1,981 | | toggle | 1,302 |
-| context-menu | 1,354 | | pagination | 2,012 | | toggle-group | 1,070 |
-| date-picker | 1,285 | | popover | 794 | | tooltip | 1,415 |
+| context-menu | 3,023 | | pagination | 2,012 | | toggle-group | 1,070 |
+| date-picker | 1,285 | | popover | 794 | | tooltip | 2,063 |
 | dialog ⚠️ | 2,534 | | progress | 573 | | typography | 1,141 |
 
-JS is separate: `command.js` 2,047, `date-picker.js` 2,047, `carousel.js` 1,136, `dropdown-menu.js` 1,101, `tabs.js` 1,092, `menubar.js` 1,062, `context-menu.js` 970, `toast.js` 761, `tooltip.js` 442.
+JS is separate: `command.js` 2,047, `date-picker.js` 2,047, `carousel.js` 1,136, `dropdown-menu.js` 1,101, `tabs.js` 1,092, `menubar.js` 1,062, `context-menu.js` 1,658, `toast.js` 761, `tooltip.js` 442.
 
 </details>
 
