@@ -37,7 +37,7 @@ The priorities, in strict order:
 3. **Same behavior in pure PHP and Blade**, logic written once.
 4. **First-class RTL.**
 
-The platform does the work first: `<dialog>`, the `popover` attribute, `<details name>`, native inputs. **46 of 54 components ship no JavaScript file**, and the 8 scripts total 8.6 KB.
+The platform does the work first: `<dialog>`, the `popover` attribute, `<details name>`, native inputs. **45 of 54 components ship no JavaScript file**, and the 9 scripts total 10.7 KB.
 
 ## 🧱 Components
 
@@ -45,12 +45,12 @@ The platform does the work first: `<dialog>`, the `popover` attribute, `<details
 
 | | |
 |---|---|
-| **Forms** (no JS) | button, button-group, checkbox, combobox, date-picker, field, form, input, input-group, input-otp, label, radio-group, select, slider, switch, textarea, toggle, toggle-group |
+| **Forms** (no JS) | button, button-group, checkbox, combobox, field, form, input, input-group, input-otp, label, radio-group, select, slider, switch, textarea, toggle, toggle-group |
 | **Layout and display** (no JS) | accordion, alert, aspect-ratio, avatar, badge, breadcrumb, calendar, card, collapsible, empty, item, kbd, pagination, progress, scroll-area, separator, sidebar, skeleton, spinner, table, typography |
 | **Overlays** (no JS) | alert-dialog, dialog, drawer, hover-card, navigation-menu, popover, sheet |
-| **Ship a small script** | carousel, command, context-menu, dropdown-menu, menubar, tabs, toast, tooltip |
+| **Ship a small script** | carousel, command, context-menu, date-picker, dropdown-menu, menubar, tabs, toast, tooltip |
 
-Of the scripts, `tabs.js` and `context-menu.js` are needed for the component's main job. The other six add keyboard or convenience behavior on top of something that already works.
+Of the scripts, `tabs.js` and `context-menu.js` are needed for the component's main job. The other seven add keyboard or convenience behavior on top of something that already works.
 
 **Not included from shadcn:**
 
@@ -230,7 +230,7 @@ The docs include a full [Persian demo page](https://p-khodadust.github.io/vui/rt
 | breadcrumb | 1,878 | | icon | 333 | | skeleton | 182 |
 | button | 1,747 | | input | 788 | | slider | 465 |
 | button-group | 1,370 | | input-group | 1,920 | | spinner | 304 |
-| calendar | 2,037 | | input-otp | 1,049 | | switch | 999 |
+| calendar | 2,033 | | input-otp | 1,049 | | switch | 999 |
 | card | 1,553 | | item | 1,996 | | table | 1,904 |
 | carousel | 1,895 | | kbd | 704 | | tabs ⚠️ | 2,120 |
 | checkbox | 817 | | label | 372 | | textarea | 624 |
@@ -238,10 +238,10 @@ The docs include a full [Persian demo page](https://p-khodadust.github.io/vui/rt
 | combobox | 557 | | motion ⚠️ | 2,262 | | toast | 1,279 |
 | command | 1,992 | | navigation-menu | 1,981 | | toggle | 1,302 |
 | context-menu | 1,354 | | pagination | 2,012 | | toggle-group | 1,070 |
-| date-picker | 217 | | popover | 794 | | tooltip | 1,415 |
+| date-picker | 1,285 | | popover | 794 | | tooltip | 1,415 |
 | dialog ⚠️ | 2,534 | | progress | 573 | | typography | 1,141 |
 
-JS is separate: `command.js` 2,047, `carousel.js` 1,136, `dropdown-menu.js` 1,101, `tabs.js` 1,092, `menubar.js` 1,062, `context-menu.js` 970, `toast.js` 761, `tooltip.js` 442.
+JS is separate: `command.js` 2,047, `date-picker.js` 2,047, `carousel.js` 1,136, `dropdown-menu.js` 1,101, `tabs.js` 1,092, `menubar.js` 1,062, `context-menu.js` 970, `toast.js` 761, `tooltip.js` 442.
 
 </details>
 
@@ -280,7 +280,7 @@ Exact versions from MDN browser-compat-data. Tailwind v4 itself needs Chrome 111
 
 </details>
 
-**Actually tested on the current code:** Chromium 151 with 392 behavior and edge-case checks in both directions (animation, overlays, hover, click, forms, nesting, long content, 320 px phones, reduced motion), every docs page at phone and desktop width in both directions (224 renders), axe and html-validate on every component, and all 104 keyboard tab stops for a visible focus indicator. Stock Firefox 159 was checked for dialog, sheet and accordion animation, toast, check mark, sidebar, tooltip focus and edge positioning, carousel, input-group, command focus, menubar switching, dialogs inside forms and long menus.
+**Actually tested on the current code:** Chromium 151 with 448 behavior and edge-case checks in both directions (animation, overlays, hover, click, forms, nesting, long content, 320 px phones, reduced motion), every docs page at phone and desktop width in both directions (224 renders), axe and html-validate on every component, and all 104 keyboard tab stops for a visible focus indicator. Stock Firefox 159 was checked for dialog, sheet and accordion animation, toast, check mark, sidebar, tooltip focus and edge positioning, carousel, input-group, command focus, menubar switching, dialogs inside forms, long menus and the date picker.
 
 ## ✂️ `cn()` limits
 
@@ -319,7 +319,7 @@ table_head('Amount', 'text-end!');   // the base has text-start
 - A strict CSP blocks a few inline attributes. Dialog close buttons, the dialog fallback for old browsers, the toast close button, the avatar image's fallback and the input-group icon use inline handlers. Esc still closes a dialog. Popover and dropdown positioning use an inline `style`, so they fall back to centered.
 
 **Behavior**
-- **Some scripts bind at page load.** After Livewire, HTMX or Turbo swap in new markup, dropdown-menu, menubar, command and carousel keep working natively but lose their script extras until a full load. Tabs, tooltip, toast and context-menu are unaffected.
+- **Some scripts bind at page load.** After Livewire, HTMX or Turbo swap in new markup, dropdown-menu, menubar, command, carousel and date-picker keep working natively but lose their script extras until a full load. Tabs, tooltip, toast and context-menu are unaffected.
 - **Contrast:** shadcn's default theme is just under WCAG AA in two places, `muted-foreground` on `muted` (4.34:1) and `destructive` text (4.49:1). Kept for parity. Adjust those two tokens if you need AA.
 - Functions are global and unprefixed, so `button()` can clash with your own code. You own the files, so rename if needed.
 - **Tabs need `tabs.js`** to switch without a reload. For zero JS, give triggers `attrs: ['href' => '?tab=x']` and render the active tab on the server.
@@ -329,7 +329,7 @@ table_head('Amount', 'text-end!');   // the base has text-start
 - **Toasts** sit below an open modal dialog, which lives in the browser's top layer.
 - **Accordion** has no arrow-key navigation.
 - **Firefox skips exit animations.** Measured on Firefox 159: overlays animate in, then close instantly. Accordion height snaps there too.
-- **Select, combobox and date-picker** are native, so their open popups can't be styled.
+- **Select and combobox** are native, so their open popups can't be styled.
 - **Calendar and date-picker are Gregorian only.** There is no Jalali (Persian) calendar yet. Calendar accepts Persian labels and a Saturday week start, but the dates and digits stay Gregorian. Doing it without the `intl` extension means shipping a conversion routine.
 - **Calendar** days are links that reload the page, and it has no range selection or arrow-key navigation.
 - **Toggle** is a checkbox in a label, not `<button aria-pressed>`, so screen readers announce a checkbox. In exchange it needs no JS and submits with forms.
@@ -405,7 +405,7 @@ php bin/size                  # budget check. --write syncs files and sizes into
 VUI_LARAVEL=/path/to/throwaway/laravel php tests/blade.php
 ```
 
-The suite has 988 tests. Verified on PHP 8.1.34 and 8.5.12, Laravel 13.40, Tailwind 4.3.5. The browser checks described above were run with a throwaway Playwright harness and aren't part of this repo, because the project has no dependencies by design.
+The suite has 990 tests. Verified on PHP 8.1.34 and 8.5.12, Laravel 13.40, Tailwind 4.3.5. The browser checks described above were run with a throwaway Playwright harness and aren't part of this repo, because the project has no dependencies by design.
 
 ### Docs site
 

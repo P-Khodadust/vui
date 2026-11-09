@@ -647,13 +647,18 @@
             "type": "component",
             "files": [
                 "components/date-picker/date-picker.blade.php",
-                "components/date-picker/date-picker.php"
+                "components/date-picker/date-picker.php",
+                "js/date-picker.js"
             ],
             "dependsOn": [
-                "input"
+                "input",
+                "button",
+                "icon",
+                "popover",
+                "calendar"
             ],
-            "description": "Native date input",
-            "size": 217
+            "description": "Date field that opens the vui calendar, native input as fallback",
+            "size": 3332
         },
         {
             "name": "alert-dialog",
@@ -798,7 +803,7 @@
                 "icon"
             ],
             "description": "Server-rendered month grid with day links",
-            "size": 2037
+            "size": 2033
         },
         {
             "name": "command",

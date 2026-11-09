@@ -737,8 +737,8 @@ return [
     ],
     'date-picker' => [
         'title' => 'Date Picker',
-        'js' => 'None. A native date input, Gregorian only.',
-        'props' => $common,
+        'js' => 'Needs date-picker.js to open the vui calendar. Without it the native date input stays, so the field always works. Gregorian only.',
+        'props' => [['class', 'string', "''", 'Goes on the wrapper'], ['attrs', 'array', '[]', 'Goes on the input: name, value, min, max, required, disabled'], ['placeholder', 'string', "'Pick a date'", ''], ['week_start', 'int', '0', '0 Sunday, 1 Monday, 6 Saturday'], ['labels', 'array', '[]', 'Keys: weekdays (space separated), prev, next. The month name follows the page language']],
         'php' => <<<'X'
             echo date_picker(attrs: ['name' => 'date', 'value' => '2026-11-07', 'aria-label' => 'Date']);
             X,
